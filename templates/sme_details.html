@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>SME Details<br></h1>
+{% from "includes/_formhelpers.html" import render_field %}
+<div >
+  <form method="POST" action="">
+	<div class="form-horizontal">
+        <table class="table">
+            <tr>
+                <td>
+                    <div class="form-group">
+                      {{ render_field(form.requestor, class_="form-control") }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                        <div class="form-group">
+                            <label for="travel_request">Travel Request</label>&nbsp;&nbsp;
+                            <input id="travel_request" name="travel_request" type="checkbox" onclick="travelShow()">
+                        </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                      <label for="po_request">PO Request</label>&nbsp;&nbsp;
+                      <input id="po_request" name="po_request" type="checkbox" onclick="poShow()">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="travel-request form-popup" id="travel-content">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                  {{ render_field(form.college, class_="form-control") }}
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                  {{ render_field(form.destination, class_="form-control") }}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                  {{ render_field(form.amount_k, class_="form-control") }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                  {{ render_field(form.travel_date, class_="form-control") }}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                        </div>
+
+                </td>
+                <td>
+                     <div class="po-request form-popup" id="po-content">
+                         <table>
+                             <tr>
+                                 <td>
+                                     <div class="form-group">
+                                      {{ render_field(form.college, class_="form-control") }}
+                                     </div>
+                                 </td>
+                                 <td>
+                                     <div class="form-group">
+                                      {{ render_field(form.amount_m, class_="form-control") }}
+                                     </div>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>
+                                     <div class="form-group">
+                                      {{ render_field(form.po_date, class_="form-control") }}
+                                     </div>
+                                 </td>
+                             </tr>
+                         </table>
+                     </div>
+                </td>
+            </tr>
+        </table>
+      <div class="col-sm-3">
+            <div class="form-group">
+          {{ render_field(form.submited_finance_date, class_="form-control") }}
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>Finance Status</label>
+            <div class="form-group">
+          {{ form.finance_status }}
+            </div>
+        </div>
+      <div class="col-sm-12">
+        <input class="btn btn-primary btn-lg" type="submit" value="Submit">
+      </div>
+  </form>
+</div>
+
+
+
+{% endblock %}

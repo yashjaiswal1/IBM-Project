@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>{{event.title}}</h1>
+  <small>Event created by {{event.username}} on {{event.create_date}}</small>
+  <hr>
+  <div>
+    {{event.body | safe}}
+  </div>
+{% endblock %}

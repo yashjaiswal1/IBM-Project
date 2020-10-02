@@ -1,0 +1,313 @@
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:2222/ (Press CTRL+C to quit)
+ * Restarting with inotify reloader
+ * Debugger is active!
+ * Debugger PIN: 112-322-285
+9.77.202.82 - - [31/Dec/2018 01:36:04] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:05] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+9.77.202.82 - - [31/Dec/2018 01:36:05] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+9.77.202.82 - - [31/Dec/2018 01:36:06] "[37mGET /login HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:17] "[32mPOST /login HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:36:17] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:25] "[1m[35mGET /download HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2309, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2295, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1741, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 35, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 35, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/myflaskapp-master/app.py", line 440, in download
+    del c['topic']
+KeyError: 'topic'
+9.77.202.82 - - [31/Dec/2018 01:36:25] "[37mGET /download?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:25] "[37mGET /download?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:25] "[37mGET /download?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:25] "[37mGET /download?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:26] "[37mGET /download?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:26] "[37mGET /download?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:40] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:41] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:43] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:46] "[32mPOST /add_college HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:36:46] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:48] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:36:58] "[32mPOST /add_college HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:36:58] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:00] "[37mGET /edit_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:04] "[37mGET /edit_college/de0002d41d75f5ec6f1e46c0da03ec39 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:09] "[32mPOST /edit_college/de0002d41d75f5ec6f1e46c0da03ec39 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:37:09] "[37mGET /edit_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:20] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:25] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:27] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:37] "[37mPOST /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:42] "[32mPOST /delete_event/de0002d41d75f5ec6f1e46c0da035919 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:37:42] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:44] "[32mPOST /delete_event/de0002d41d75f5ec6f1e46c0da038467 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:37:44] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:45] "[32mPOST /delete_event/de0002d41d75f5ec6f1e46c0da03dbe8 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:37:45] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:46] "[32mPOST /delete_event/de0002d41d75f5ec6f1e46c0da03e159 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:37:46] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:49] "[37mGET /download HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:54] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:37:58] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:38:13] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:38:13] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:38:42] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:39:43] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:39:45] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:39:47] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:39:49] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:39:51] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:39:53] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:39:54] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:40:31] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:40:49] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:40:50] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:40:53] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:40:54] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:40:55] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:40:58] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:41:09] "[32mGET /logout HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:41:10] "[37mGET /login HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:41:22] "[37mGET /login HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:41:34] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:41:47] "[37mGET /login HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:42:04] "[32mPOST /login HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:42:04] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:42:11] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:42:46] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+9.77.202.82 - - [31/Dec/2018 01:42:57] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:43:35] "[37mPOST /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:44:00] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:44:59] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:45:23] "[32mPOST /login HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:45:23] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:45:27] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:45:47] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:45:47] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:45:50] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:46:33] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:46:34] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:46:38] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da03f410 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:46:52] "[32mPOST /edit_event/de0002d41d75f5ec6f1e46c0da03f410 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:46:52] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:46:56] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:49:24] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:49:25] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:49:51] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:49:53] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:49:55] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:49:57] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:03] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:06] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:08] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:09] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:11] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:11] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:14] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:15] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:17] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:19] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:20] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:33] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:50:39] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 01:51:02] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 01:51:02] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:11] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:19] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:21] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:22] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:22] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:26] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:27] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:30] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:30] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:33] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:36] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:45] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:47] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:53] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da03f3b5 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:44:56] "[32mPOST /edit_event/de0002d41d75f5ec6f1e46c0da03f3b5 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 03:44:56] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:45:04] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:45:06] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 03:45:11] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:01:52] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:02:19] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:05:55] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:06:00] "[32mGET /logout HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:06:00] "[37mGET /login HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:06:11] "[32mPOST /login HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:06:11] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:06:22] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:06:25] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:06:29] "[32mGET /logout HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:06:29] "[37mGET /login HTTP/1.1[0m" 200 -
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:2222/ (Press CTRL+C to quit)
+ * Restarting with inotify reloader
+ * Debugger is active!
+ * Debugger PIN: 112-322-285
+9.77.202.82 - - [31/Dec/2018 06:07:01] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:07:01] "[37mGET /login HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:09] "[32mPOST /login HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:07:09] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:15] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:17] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:27] "[32mPOST /add_college HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:07:27] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:29] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:39] "[32mPOST /add_college HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:07:39] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:42] "[37mGET /edit_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:47] "[32mPOST /delete_college/de0002d41d75f5ec6f1e46c0da03ce19 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:07:47] "[37mGET /edit_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:49] "[32mPOST /delete_college/de0002d41d75f5ec6f1e46c0da03d0a6 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:07:49] "[37mGET /edit_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:50] "[32mPOST /delete_college/de0002d41d75f5ec6f1e46c0da03ec39 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:07:50] "[37mGET /edit_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:07:56] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:08:05] "[32mPOST /add_college HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:08:05] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:08:13] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:08:25] "[32mPOST /add_college HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:08:25] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:08:29] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:08:32] "[37mGET /edit_college HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:08:35] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:08:43] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da03f3b5 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:08:55] "[32mPOST /edit_event/de0002d41d75f5ec6f1e46c0da03f3b5 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:08:55] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:09:04] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da04103c HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:09:35] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da04103c HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:09:42] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da0400a9 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:09:51] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da03f410 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:10:00] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da0400a9 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:10:04] "[32mPOST /delete_event/de0002d41d75f5ec6f1e46c0da03f3b5 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:10:04] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:10:05] "[32mPOST /delete_event/de0002d41d75f5ec6f1e46c0da03f410 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:10:05] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:10:06] "[32mPOST /delete_event/de0002d41d75f5ec6f1e46c0da0400a9 HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:10:06] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:10:06] "[32mPOST /delete_event/de0002d41d75f5ec6f1e46c0da04103c HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:10:07] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:10:09] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:10:26] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:10:26] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:10:32] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da04356e HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:11:21] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:11:24] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:11:50] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:11:50] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:12:00] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da0438a3 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:12:13] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da04356e HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:12:24] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da04356e HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:12:32] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:12:48] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:12:49] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:12:51] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da043986 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:12:58] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:13:08] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:13:08] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:13:10] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da044595 HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:20:16] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:20:17] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:20:18] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:20:19] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:20:21] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:20:57] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:20:58] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:20:59] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:21:35] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:21:53] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:21:53] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:21:57] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da04512e HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:22:02] "[32mPOST /edit_event/de0002d41d75f5ec6f1e46c0da04512e HTTP/1.1[0m" 302 -
+9.77.202.82 - - [31/Dec/2018 06:22:02] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.202.82 - - [31/Dec/2018 06:22:21] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.122.120 - - [01/Jan/2019 11:09:15] "[37mGET / HTTP/1.1[0m" 200 -
+9.77.122.120 - - [01/Jan/2019 11:09:16] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+9.77.122.120 - - [01/Jan/2019 11:09:16] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+9.77.122.120 - - [01/Jan/2019 11:09:17] "[37mGET /login HTTP/1.1[0m" 200 -
+9.77.122.120 - - [01/Jan/2019 11:09:25] "[32mPOST /login HTTP/1.1[0m" 302 -
+9.77.122.120 - - [01/Jan/2019 11:09:25] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.77.122.120 - - [01/Jan/2019 11:09:29] "[37mGET /download HTTP/1.1[0m" 200 -
+9.77.122.120 - - [01/Jan/2019 11:09:54] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.77.122.120 - - [01/Jan/2019 11:12:37] "[37mGET / HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:23:57] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:24:00] "[32mGET /logout HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:24:00] "[37mGET /login HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:24:02] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:24:02] "[37mGET /login HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:24:04] "[37mGET / HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:26:46] "[37mGET / HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:26:47] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:26:47] "[37mGET /login HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:26:48] "[37mGET / HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:26:52] "[37mGET /register HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:26:55] "[37mGET /login HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:27:15] "[32mPOST /login HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:27:15] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:27:31] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:28:12] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:28:12] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:28:37] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da045db5 HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:28:58] "[32mPOST /edit_event/de0002d41d75f5ec6f1e46c0da045db5 HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:28:59] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:29:47] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da045db5 HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:31:06] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:31:10] "[37mGET /download HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:31:44] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:31:46] "[37mGET /add_college HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:32:04] "[32mPOST /add_college HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:32:04] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:32:07] "[37mGET /edit_college HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:32:12] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:32:14] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:32:50] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:32:50] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:33:01] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:33:58] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:33:58] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:34:40] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:35:12] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:35:12] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:35:27] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da04740c HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:35:51] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:36:05] "[37mPOST /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:42:07] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:42:08] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:42:09] "[37mGET / HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:42:11] "[37mGET / HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:42:13] "[37mGET / HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:42:14] "[37mGET /admin HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:42:15] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:42:26] "[37mGET /add_event HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:44:02] "[32mPOST /add_event HTTP/1.1[0m" 302 -
+9.109.216.216 - - [01/Jan/2019 22:44:03] "[37mGET /dashboard HTTP/1.1[0m" 200 -
+9.109.216.216 - - [01/Jan/2019 22:44:08] "[37mGET /edit_event/de0002d41d75f5ec6f1e46c0da0476e1 HTTP/1.1[0m" 200 -

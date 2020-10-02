@@ -1,0 +1,416 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Add Event<br></h1>
+
+    <label class="control-label col-sm-4">Event Type</label>
+  {% from "includes/_formhelpers.html" import render_field %}
+    <div class="form-group">
+  <form style="width: 40%" method="POST" action="" >
+
+  <!--<select id="ddl" onchange="GetSelectedTextValue(this)">-->
+  <select id="events" class="form-control" style="margin-left: 15px" onchange="openForm(this)">
+    <option value=""></option>
+    <option value="Technical_Fest">Technical Fest</option>
+    <option value="Conference">Conference</option>
+    <option value="Tech_Session">Tech Session</option>
+	<option value="Tech_Workshop">Tech Workshop</option>
+    <option value="Hackathon">Hackathon</option>
+    <option value="SUR">SUR</option>
+    </select>
+
+  </form>
+    </div>
+
+<div id="myForm" class="form-popup">
+  <form method="POST"  action="">
+      <div class="form-horizontal">
+        <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.event_name, class_="form-control") }}
+            </div>
+        </div>
+        </div>
+          <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.sponsorship_amount, class_="form-control") }}
+            </div>
+        </div>
+        </div>
+          <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.college, class_="form-control") }}
+            </div>
+        </div></div>
+              <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.no_of_participants, class_="form-control") }}
+            </div>
+            </div>
+        </div></div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.startdate, class_="form-control") }}
+        </div></div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              {{ render_field(form.enddate, class_="form-control") }}
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-offset-2">
+                <div class="form-group">
+                    <p> <b>Status</b></p>
+                    <div class="col-sm-8">
+                  {{ form.status }}
+                    </div>
+                </div>
+          </div>
+      <div class="col-sm-12">
+        <p><input class="btn btn-primary btn-lg" type="submit" value="Submit"></p>
+      </div>
+  </form>
+</div>
+<br><br>
+<div id="radio_form" class="form-popup">
+    <p>
+        <label class="control-label col-sm-3" style="margin-top: 7px"> Is this part of a main Event?  </label>
+    <button class="btn btn-primary" onclick="openRadioForm('yes')">Yes</button>
+    <button class="btn btn-warning" onclick="openRadioForm('no')">No</button>
+    </p>
+</div>
+
+    <div id="radio_form_for_hackathon" class="form-popup">
+    <p>
+        <label class="control-label col-sm-3" style="margin-top: 7px"> Is this part of a main Event?  </label>
+    <button class="btn btn-primary" onclick="openRadioFormHackathon('yes')">Yes</button>
+    <button class="btn btn-warning" onclick="openRadioFormHackathon('no')">No</button>
+    </p>
+</div>
+
+<div id="tech_session" class="form-popup">
+  <form method="POST" action="/tech_session">
+	<div class="form-horizontal">
+        <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.tech_session_name, class_="form-control") }}
+            </div>
+        </div>
+        </div>
+        <div id="eventlistfield" class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.list_of_events, class_="form-control") }}
+            </div>
+        </div>
+        </div>
+          <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.college, class_="form-control") }}
+            </div>
+        </div></div>
+        <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.technology, class_="form-control") }}
+            </div>
+            </div>
+        </div></div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.no_of_participants, class_="form-control") }}
+            </div>
+        </div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.startdate, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.enddate, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-6">
+            <div class="form-group">
+                <p> <b>Status</b></p>
+                    <div class="col-sm-8">
+          {{ form.status }}
+                    </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+          {{ render_field(form.ibm_sme_name, class_="form-control") }}
+            </div>
+        </div>
+      <div class="col-sm-2">
+            <div class="form-group">
+          {{ render_field(form.bu, class_="form-control") }}
+            </div>
+            </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+          {{ render_field(form.box_location_atten, class_="form-control") }}
+
+            </div>
+        </div>
+      <div class="col-sm-3">
+            <div class="form-group">
+          {{ render_field(form.box_location_feed, class_="form-control") }}
+            </div>
+        </div>
+
+      <div class="col-sm-12">
+        <input class="btn btn-primary btn-lg" type="submit" value="Submit">
+      </div>
+  </form>
+</div>
+
+
+    <div id="HackathonForm" class="form-popup">
+  <form method="POST" action="/hackathon">
+	<div class="form-horizontal">
+        <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.hackathon_name, class_="form-control") }}
+            </div>
+        </div>
+        </div>
+        <div id="eventlistfields" class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.list_of_events, class_="form-control") }}
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.college, class_="form-control") }}
+            </div>
+        </div></div>
+          <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.technology, class_="form-control") }}
+            </div>
+        </div></div>
+
+              <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.no_of_participants, class_="form-control") }}
+            </div>
+            </div>
+        </div></div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.startdate, class_="form-control") }}
+        </div></div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              {{ render_field(form.enddate, class_="form-control") }}
+            </div>
+          </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+          {{ render_field(form.no_of_registrations, class_="form-control") }}
+            </div>
+        </div>
+      <div class="col-sm-3">
+                <div class="form-group">
+              {{ render_field(form.no_of_abstracts, class_="form-control") }}
+                    </div>
+            </div>
+      <div class="col-sm-2">
+                <div class="form-group">
+              {{ render_field(form.no_of_finalist, class_="form-control") }}
+                </div>
+            </div>
+            <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.finaledate, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-6">
+              <div class="col-sm-8">
+                  <div class="form-group">
+                <span>{{ render_field(form.jury_name, class_="form-control") }}
+                {{ render_field(form.bu, class_="form-control") }}
+                  <button class="btn btn-warning add_more_jury">Add More</button></span>
+                  <div class="jury-wrap"></div>
+                </div>
+              </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          {{ render_field(form.additional_jury_name, class_="form-control") }}
+        </div></div>
+      <br>
+      <div class="col-sm-6">
+            <div class="form-group">
+                <p> <b>Status</b></p>
+                    <div class="col-sm-8">
+          {{ form.status }}
+                    </div>
+            </div>
+        </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          {{ render_field(form.winning_team_details, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          {{ render_field(form.runnerup_team_details, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          {{ render_field(form.box_location_winning_profile, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-12">
+        <input class="btn btn-primary btn-lg" type="submit" value="Submit">
+      </div>
+  </form>
+</div>
+
+
+<div id="myForm2" class="form-popup">
+  <form method="POST" action="">
+	<div class="form-horizontal">
+        <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.topic, class_="form-control") }}
+            </div>
+        </div>
+        </div>
+          <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.college, class_="form-control") }}
+            </div>
+        </div></div>
+              <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.no_of_participants, class_="form-control") }}
+            </div>
+            </div>
+        </div></div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          {{ render_field(form.startdate, class_="form-control") }}
+        </div></div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              {{ render_field(form.enddate, class_="form-control") }}
+            </div>
+          </div>
+      <div class="col-sm-12">
+        <p><input class="btn btn-primary btn-lg" type="submit" value="Submit"></p>
+      </div>
+  </form>
+</div>
+
+
+    <div id="myForm3" class="form-popup">
+  <form method="POST" action="/sur_event">
+	<div class="form-horizontal">
+        <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.sur_topic_name, class_="form-control") }}
+            </div>
+        </div>
+        </div>
+          <div class="col-sm-6" >
+        <div class="form-group">
+            <div class="col-sm-8 ">
+          {{ render_field(form.prof_name, class_="form-control") }}
+                <span><button class="btn btn-warning add_field_button">Add More</button></span>
+                <div class="input_fields_wrap">
+
+                </div>
+
+            </div>
+        </div></div>
+
+              <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.technology, class_="form-control") }}
+            </div>
+            </div>
+        </div></div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.proposal_receipt_date, class_="form-control") }}
+        </div></div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              {{ render_field(form.proposal_submission_date, class_="form-control") }}
+            </div>
+          </div>
+      <div class="col-sm-2">
+            <div class="form-group">
+              {{ render_field(form.project_startdate, class_="form-control") }}
+            </div>
+          </div>
+      <div class="col-sm-4">
+            <div class="form-group">
+            </div>
+          </div>
+      <div class="col-sm-2">
+            <div class="form-group">
+              {{ render_field(form.project_enddate, class_="form-control") }}
+            </div>
+          </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+            <label>Proposal Status</label><br>
+            <input type="radio" name="status" value="Approved" onclick="sur_approved();" checked><b>  Approved</b><br>
+            <input type="radio" name="status" value="Rejected" onclick="sur_rejected();"><b>  Rejected</b>
+        </div>
+      </div>
+      <div id="invoice_dates">
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.invoice_receipt_date, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.invoice_payout_date, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          {{ render_field(form.paper_publications, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          {{ render_field(form.conference_showcase, class_="form-control") }}
+        </div></div>
+          </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          {{ render_field(form.sur_proposal_location, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          {{ render_field(form.project_url, class_="form-control") }}
+        </div></div>
+      <div class="col-sm-3">
+        <p><input class="btn btn-primary btn-lg" type="submit" value="Submit"></p>
+      </div>
+  </form>
+</div>
+
+
+
+    <div id="test" class="form-group"></div>
+
+{% endblock %}

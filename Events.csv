@@ -1,0 +1,4 @@
+username,event_name,college,no_of_participants,enddate,startdate,status,theme,topic
+Rajnish Kumar,Youth,Indian Institute of Science,12,2019-02-05,2019-02-02,Close,None,event
+Rajnish Kumar,IEEE,Indian Institute of Science,25,2019-02-05,2019-01-30,Open,None,event
+Rajnish Kumar,Ingunity,Indian Statistical Institute,400,2019-02-06,2019-02-01,Close,None,event

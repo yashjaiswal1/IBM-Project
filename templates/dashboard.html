@@ -1,0 +1,190 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Dashboard</h1>
+  {% from "includes/_formhelpers.html" import render_field %}
+
+<br>
+   <form method="POST" action="">
+   <div class="form-horizontal">
+       <div class="col-sm-2 ">
+           <label>Event Types</label>
+           <div class="form-group">
+               <select id="event_types" class="form-control" onchange="showTable(this)">
+                <option value="Technical_Fest">Technical Fest</option>
+                <option value="Tech_Session">Tech Session</option>
+                <option value="Hackathon">Hackathon</option>
+                <option value="SUR">SUR</option>
+                </select>
+            </div>
+        </div>
+       <div class="col-sm-2 col-md-offset-2">
+        <div class="form-group">
+          {{ render_field(form.fromdate, class_="form-control") }}
+        </div>
+       </div>
+       &nbsp;&nbsp;
+       <div class="col-sm-2" style="margin-left: 25px">
+        <div class="form-group">
+          {{ render_field(form.todate, class_="form-control") }}
+        </div>
+       </div>
+
+
+       <div class="col-sm-3">
+	    <input style="margin-top: 25px" class="btn btn-primary" type="submit" value="Submit">
+        </div>
+
+
+        </div>
+	</form>
+
+    <div id="normalEvent">
+  <table class="table table-striped">
+    <tr>
+      <th>Event_name/ Topic</th>
+	  <th>College</th>
+      <th># Participants</th>
+      <th>StartDate</th>
+	  <th>EndDate</th>
+      <th>Status</th>
+	  <th>Sponsorship amount</th>
+      <th></th>
+	  <th></th>
+    </tr>
+    {% for event in events %}
+        {% if event.type ==  'event' %}
+      <tr>
+		{% if event.event_name %}
+        <td>{{event.event_name}}</td>
+		{% else %}
+		<td>{{event.topic}}</td>
+		{% endif %}
+        <td>{{event.college}}</td>
+		<td>{{event.no_of_participants}}</td>
+		<td>{{event.startdate}}</td>
+		<td>{{event.enddate}}</td>
+		<td>{{event.status}}</td>
+		<td>{{event.sponsorship_amount}}</td>
+        <td><a href="edit_event/{{event.id}}" class="btn btn-default pull-right">Edit</a></td>
+        <td>
+          <form action="{{url_for('delete_event', id=event.id)}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+      </tr>
+        {% endif %}
+    {% endfor %}
+  </table>
+    </div>
+
+
+    <div id="tech-session" class="table-popup">
+  <table class="table table-striped">
+    <tr>
+      <th>Tech Session name</th>
+	  <th>College</th>
+      <th># Participants</th>
+      <th>Date</th>
+	  <th>IBM SME Name</th>
+      <th>Technology</th>
+	  <th>Box location for Attendee list</th>
+      <th></th>
+	  <th></th>
+    </tr>
+    {% for event in events %}
+        {% if event.type ==  'tech Session' %}
+      <tr>
+        <td>{{event.event_name}}</td>
+        <td>{{event.college}}</td>
+		<td>{{event.no_of_participants}}</td>
+		<td>{{event.startdate}}</td>
+		<td>{{event.ibm_sme_name}}</td>
+		<td>{{event.technology}}</td>
+		<td>{{event.box_location_atten}}</td>
+        <td><a href="edit_event/{{event.id}}" class="btn btn-default pull-right">Edit</a></td>
+        <td>
+          <form action="{{url_for('delete_event', id=event.id)}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+      </tr>
+        {% endif %}
+    {% endfor %}
+  </table>
+    </div>
+
+    <div id="hackathon" class="table-popup">
+  <table class="table table-striped">
+    <tr>
+      <th>Hackathon</th>
+	  <th>College</th>
+      <th># of registrations </th>
+      <th>Finale Date </th>
+	  <th>Technology</th>
+      <th>Jury</th>
+	  <th>Winning team</th>
+      <th></th>
+	  <th></th>
+    </tr>
+    {% for event in events %}
+        {% if event.type ==  'Hackathon' %}
+      <tr>
+        <td>{{event.Hackathon_name}}</td>
+        <td>{{event.college}}</td>
+		<td>{{event.no_of_registrations}}</td>
+		<td>{{event.finaledate}}</td>
+		<td>{{event.technology}}</td>
+		<td>{{event.jury}}</td>
+		<td>{{event.winning_team_details}}</td>
+        <td><a href="edit_event/{{event.id}}" class="btn btn-default pull-right">Edit</a></td>
+        <td>
+          <form action="{{url_for('delete_event', id=event.id)}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+      </tr>
+        {% endif %}
+    {% endfor %}
+  </table>
+    </div>
+    <div id="sur" class="table-popup">
+  <table class="table table-striped">
+    <tr>
+      <th>SUR Topic Name</th>
+	  <th>Professor Name</th>
+      <th>Technology</th>
+
+      <th>Proposal Receipt date</th>
+	  <th>Proposal Submission date</th>
+      <th>Proposal Status</th>
+	  <th>Paper publications</th>
+      <th></th>
+	  <th></th>
+    </tr>
+    {% for event in events %}
+        {% if event.type ==  'SUR' %}
+      <tr>
+        <td>{{event.sur_topic_name}}</td>
+        <td>{{event.professor_Name}}</td>
+		<td>{{event.Technology}}</td>
+		<td>{{event.proposal_receipt_date}}</td>
+		<td>{{event.proposal_submission_date}}</td>
+		<td>{{event.proposal_status}}</td>
+		<td>{{event.paper_publications}}</td>
+        <td><a href="edit_event/{{event.id}}" class="btn btn-default pull-right">Edit</a></td>
+        <td>
+          <form action="{{url_for('delete_event', id=event.id)}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+      </tr>
+        {% endif %}
+    {% endfor %}
+  </table>
+    </div>
+{% endblock %}

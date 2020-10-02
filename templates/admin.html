@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Admin Panel</h1>
+  {% from "includes/_formhelpers.html" import render_field %}
+  
+<form method="get" action="/add_college">
+    <button class="btn btn-primary" type="submit">Add College</button>
+</form><br>
+<form method="get" action="/edit_college">
+    <button class="btn btn-primary" type="submit">Update College</button>
+</form>
+
+ 
+
+
+{% endblock %}
