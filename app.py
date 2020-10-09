@@ -131,13 +131,16 @@ def addcollege():
     form = EventForm(request.form)
     if request.method == 'POST':
         college_name = form.college_name.data
+        college_category = form.college_category.data
+        ur_spoc = form.ur_spoc.data
         city = form.city.data
+        region = form.region.data
         for i in db:
             if db[i]['type']=='admin_college_add':
-                if db[i]['college_name'] == college_name and db[i]['city'] == city:
+                if db[i]['college_name'] == college_name and db[i]['college_category'] == college_category and db[i]['city'] == city:
                     flash('College Already Exists', 'danger')
                     return redirect(url_for('admin'))
-        doc = {'college_name': college_name, 'city': city, 'type':'admin_college_add'}
+        doc = {'college_name': college_name, 'college_category': college_category, 'ur_spoc': ur_spoc, 'city': city, 'region': region, 'type':'admin_college_add'}
         db.save(doc)
 
         flash('College added', 'success')
@@ -168,16 +171,25 @@ def delete_college(id):
 def edit_college1(id):
     form = EventForm(request.form)
     form.college_name.data = db[id]['college_name']
+    form.college_category.data = db[id]['college_category']
+    form.ur_spoc.data = db[id]['ur_spoc']
     form.city.data = db[id]['city']
+    form.region.data = db[id]['region']
     if request.method == 'POST':
         college_name = request.form['college_name']
+        college_category = request.form['college_category']
+        ur_spoc = request.form['ur_spoc']
         city = request.form['city']
+        region = request.form['region']
         doc = db[id]
         doc['college_name'] = college_name
+        doc['college_category'] = college_category
+        doc['ur_spoc'] = ur_spoc
         doc['city'] = city
+        doc['region'] = region
         for i in db:
             if db[i]['type']=='admin_college_add':
-                if db[i]['college_name'] == college_name and db[i]['city'] == city:
+                if db[i]['college_name'] == college_name and db[i]['college_category'] == college_category and db[i]['city'] == city:
                     flash('College Already Exists', 'danger')
                     return redirect(url_for('editcollege'))
         db.save(doc)
@@ -282,7 +294,7 @@ def datesubmit():
 
 # Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def dashboard():
     event_type_list = ['event', 'tech Session', 'Hackathon']
     form = EventForm(request.form)
@@ -353,7 +365,10 @@ class EventForm(Form):
     hackathon_name = StringField('Hackathon Name', [validators.Length(min=1, max=200), validators.DataRequired()])
     college = SelectField('College',[validators.DataRequired()], choices=[])
     college_name = StringField('College Name', [validators.Length(min=3), validators.DataRequired()])
-    city = SelectField('city', choices=[("Bangalore","Bangalore"), ("C2","C2"),("Chennai","Chennai")])
+    college_category = SelectField('College Category', choices=[("Platinum","Platinum"), ("Gold","Gold"),  ("Silver", "Silver")])
+    ur_spoc = StringField('UR SPOC', [validators.Length(min=1, max=200), validators.DataRequired()])
+    city = SelectField('City', choices=[("Bangalore","Bangalore"), ("C2","C2"),("Chennai","Chennai")])
+    region = StringField('Region', [validators.Length(min=1, max=200), validators.DataRequired()])
     no_of_participants = IntegerField('No of participants', [validators.NumberRange(min=1), validators.DataRequired()])
     no_of_registrations = IntegerField('No of registrations', [validators.NumberRange(min=1), validators.DataRequired()])
     no_of_abstracts = IntegerField('No of abstracts shortlisted',[validators.NumberRange(min=1), validators.DataRequired()])
@@ -432,7 +447,7 @@ class EventForm(Form):
 
 # Add Event
 @app.route('/add_event', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def add_event():
     form = EventForm(request.form)
     form.college.choices = college_call()
