@@ -11,6 +11,7 @@ import datetime
 import pandas as pd
 
 app = Flask(__name__)
+app.secret_key = 'secret123'
 #couch = couchdb.Server()
 # Using Database
 #db = couch['events']
@@ -23,8 +24,8 @@ def make_session_permanent():
 
 def authorizeCouch():
     couchserver = couchdb.Server("http://localhost:5984/")
-    user = "admin"
-    password = "admin"
+    user = "stuti"
+    password = "stuti"
     return couchdb.Server("http://%s:%s@localhost:5984/" % (user, password))
 
 def dbCreate(dbname,couchserver):
@@ -363,6 +364,18 @@ class EventForm(Form):
     sponsorship_amount = StringField('Sponsorship Amount', [validators.Length(min=5, max=500), validators.DataRequired()],default='INR  ')
 
     hackathon_name = StringField('Hackathon Name', [validators.Length(min=1, max=200), validators.DataRequired()])
+    
+    #----------tech workshop---------
+    institution = SelectField('Institution',[validators.DataRequired()], choices=[])
+    tech_area = StringField('Technology', [validators.Length(min=1), validators.DataRequired()])
+    no_of_sessions = StringField('Number of sessions', [validators.Length(min=1), validators.DataRequired()])
+    # no_of_attendees = IntegerField('Number of attendees', [validators.Length(min=1), validators.DataRequired()])
+    event_posted = RadioField('Event posted on portal', [validators.DataRequired()], choices= [('Yes', 'Yes'), ('No', 'No')])
+    event_socialising = RadioField('Post event socialising?', [validators.DataRequired()], choices= [('Yes', 'Yes'), ('No', 'No')])
+    comments = TextAreaField('Comments',default='None')
+    #-----------END of TECH FEST------------------------
+
+
     college = SelectField('College',[validators.DataRequired()], choices=[])
     college_name = StringField('College Name', [validators.Length(min=3), validators.DataRequired()])
     college_category = SelectField('College Category', choices=[("Platinum","Platinum"), ("Gold","Gold"),  ("Silver", "Silver")])
@@ -386,7 +399,7 @@ class EventForm(Form):
     project_enddate = DateField('Project End Date', [validators.DataRequired()], default=datetime.date.today, format='%Y-%m-%d')
     fromdate = DateField('From Date',default = datetime.date.today, format='%Y-%m-%d')
     todate = DateField('To Date', default = datetime.date.today, format='%Y-%m-%d')
-    status = RadioField('Status', [validators.DataRequired()], choices= [('Planned', 'Planned'), ('In Progress', 'In Progress'),('Completed','Completed')],default='Planned')
+    status = RadioField('Status', [validators.DataRequired()], choices= [('Planned', 'Planned'), ('In Progress', 'In Progress'),('Completed','Completed'),('Cancelled','Cancelled')],default='Planned')
     list_of_events  = SelectField('List of Events', choices=[])
     theme  = SelectField('Theme',[validators.DataRequired()], choices=[('AI', 'AI'), ('Blockchain', 'Blockchain'), ('Cloud', 'Cloud'), ('Security', 'Security'), ('Project Management', 'Project Management'), ('Others', 'Others')])
     topic = StringField('Topic', [validators.Length(min=3), validators.DataRequired()])
@@ -451,14 +464,20 @@ class EventForm(Form):
 def add_event():
     form = EventForm(request.form)
     form.college.choices = college_call()
+    form.institution.choices=college_call()
     form.list_of_events.choices = events_call()
     error = None
     if request.method == 'POST':
         event_name = form.event_name.data
-        college = form.college.data
+        college = form.institution.data #college-->institution
         # no_of_participants = form.no_of_participants.data
         # startdate = str(form.startdate.data)
         # enddate = str(form.enddate.data)
+        tech_area = form.tech_area.data 
+        # event_posted = form.event_posted.data
+        event_posted=request.form['event_portal']
+        comments = form.comments.data
+        event_socialising = request.form['post_event']
         if form.validate_on_submit()==True:
             no_of_participants = str(form.no_of_participants.data)
             status = form.status.data
@@ -466,9 +485,10 @@ def add_event():
             enddate = str(form.enddate.data)
             sponsorship_amount = form.sponsorship_amount.data
             topic = form.topic.data
-            doc = {'username': session['username'], 'event_name': event_name, 'college': college,
+            doc = {'username': 'stuti', 'event_name': event_name, 'college': college,'tech_area' : tech_area ,
                    'no_of_participants': no_of_participants, 'enddate': enddate, 'startdate': startdate,
-                   'status': status, 'sponsorship_amount': sponsorship_amount, 'topic':topic, 'type': 'event'}
+                   'status': status, 'sponsorship_amount': sponsorship_amount,'status': status,
+                   'event_posted' : event_posted,'comments' : comments ,'event_socialising' : event_socialising,'topic':topic, 'type': 'event'}
             db.save(doc)
             flash('Event Created', 'success')
             return redirect(url_for('dashboard'))
@@ -481,7 +501,7 @@ def add_event():
 
 
 @app.route('/sme_details', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def sme_details():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -514,7 +534,7 @@ def sme_details():
 
 
 @app.route('/sur_event', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def sur_event():
     form = EventForm(request.form)
     if request.method == 'POST':
@@ -560,7 +580,7 @@ def sur_event():
 
 
 @app.route('/tech_session', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def tech_session():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -592,7 +612,7 @@ def tech_session():
     return render_template('add_event.html', form=form)
 
 @app.route('/hackathon', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def hackathon():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -636,7 +656,7 @@ def hackathon():
 
 # Edit Event
 @app.route('/edit_event/<string:id>', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def edit_event(id):
     form = EventForm(request.form)
     print(db[id]['type'])
@@ -792,6 +812,7 @@ def edit_event(id):
         form.college.data = db[id]['college']
         form.college.choices = college_call()
         form.no_of_participants.data = db[id]['no_of_participants']
+        form.tech_area.data = db[id]['tech_area']
         t = db[id]['startdate']
         t = t.replace('-', '')
         s = datetime.datetime.strptime(t, "%Y%m%d")
@@ -810,15 +831,18 @@ def edit_event(id):
             startdate = request.form['startdate']
             enddate = request.form['enddate']
             status = request.form['status']
+            tech_area = request.form['tech_area']
 
             doc = db[id]
             doc['event_name'] = event_name
             doc['sponsorship_amount'] =sponsorship_amount
             doc['college'] = college
+            doc['tech_area'] = tech_area
             doc['no_of_participants'] = no_of_participants
             doc['startdate'] = startdate
             doc['enddate'] = enddate
             doc['status'] = status
+
             db.save(doc)
             flash('Event Updated', 'info')
 
@@ -838,7 +862,7 @@ def edit_event(id):
 
 # Delete Event
 @app.route('/delete_event/<string:id>', methods=['POST'])
-@is_logged_in
+# @is_logged_in
 def delete_event(id):
     doc = db[id]
     db.delete(doc)
@@ -966,5 +990,4 @@ def downloadexcel():
 
 
 if __name__ == '__main__':
-    app.secret_key = 'secret123'
     app.run(host='0.0.0.0',port=2222,debug=True)
