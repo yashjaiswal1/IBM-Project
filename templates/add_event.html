@@ -43,18 +43,27 @@
       <div class="col-sm-6">
         <div class="form-group">
           <div class="col-sm-8">
-            {{ render_field(form.college, class_="form-control") }}
+            {{ render_field(form.institution, class_="form-control") }}   <!--college ===> institution--> 
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
+
+      <!-- COMMENTED BY S -->
+       <!-- <div class="col-sm-6">
         <div class="form-group">
           <div class="col-sm-8">
             {{ render_field(form.no_of_participants, class_="form-control") }}
           </div>
         </div>
+      </div> -->
+      <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+          {{ render_field(form.tech_area, class_="form-control") }}
+            </div>
+        </div>
       </div>
-    </div>
+    <!-- </div> -->
     <div class="col-sm-2">
       <div class="form-group">
         {{ render_field(form.startdate, class_="form-control") }}
@@ -65,6 +74,8 @@
         {{ render_field(form.enddate, class_="form-control") }}
       </div>
     </div>
+    </div>
+    <!-- FORM HORIZONTAL ENDS -->
     <div class="col-sm-6 col-md-offset-2">
       <div class="form-group">
         <p><b>Status</b></p>
@@ -73,6 +84,43 @@
         </div>
       </div>
     </div>
+    <!-- <div class="col-sm-6">
+      <div class="col-sm-6"> -->
+    <div class="form-group">
+      <div class="col-sm-6">
+    <!-- {{ render_field(form.event_posted) }} -->
+    <p><b>Event Posted on portal?</b></p>
+    <input type="radio" id="yes" value="yes" name="event_portal">
+    <label for="yes">Yes</label>
+    <input type="radio" id="no" value="no" name="event_portal">
+    <label for="no">No</label>
+      </div>
+  </div>
+  <!-- </div>
+  </div> -->
+<div class="col-sm-6">
+  <div class="col-sm-6">
+    <p><b>Comments</b></p>
+    {{ form.comments(rows='2',columns='90') }}
+      </div>
+</div>
+<div class="col-sm-6">
+  <p><b>Post event socialising?</b></p>
+  <input type="radio" id="yes" value="yes" name="post_event" onclick="showlinks()">
+  <label for="yes">Yes</label>
+  <input type="radio" id="no" name="post_event" value="no" onclick="hidelinks()">
+  <label for="no">No</label>
+  <!-- <div class="col-sm-6"> -->
+    <!-- {% for subfield in form.event_socialising %}
+    <tr>
+    <td>{{ subfield }}</td>
+    <td>{{ subfield.label }}</td>
+    </tr>
+    {% endfor %} -->
+    <!-- {{ form.event_socialising(onchange="showlinks()")}} -->
+    <!-- </div> -->
+    <p id="links" style="display:none">---LINKS HERE---</p>
+</div>
     <div class="col-sm-12">
       <p>
         <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
@@ -466,4 +514,15 @@
 
 <div id="test" class="form-group"></div>
 
+
+<script>
+  function showlinks()
+  {
+    document.getElementById('links').style.display='block';
+  }
+  function hidelinks()
+  {
+    document.getElementById('links').style.display='none';
+  }
+</script>
 {% endblock %}
