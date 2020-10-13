@@ -366,7 +366,7 @@ class EventForm(Form):
     hackathon_name = StringField('Hackathon Name', [validators.Length(min=1, max=200), validators.DataRequired()])
     
     #----------tech workshop---------
-    institution = SelectField('Institution',[validators.DataRequired()], choices=[])
+    institution = StringField('Institution',[validators.Length(min=1),validators.DataRequired()])
     tech_area = StringField('Technology', [validators.Length(min=1), validators.DataRequired()])
     no_of_sessions = StringField('Number of sessions', [validators.Length(min=1), validators.DataRequired()])
     # no_of_attendees = IntegerField('Number of attendees', [validators.Length(min=1), validators.DataRequired()])
