@@ -809,8 +809,8 @@ def edit_event(id):
         form = EventForm(request.form)
         form.event_name.data = db[id]['event_name']
         form.sponsorship_amount.data = db[id]['sponsorship_amount']
-        form.college.data = db[id]['college']
-        form.college.choices = college_call()
+        form.institution.data = db[id]['college'] 
+#         form.college.choices = college_call()
         form.no_of_participants.data = db[id]['no_of_participants']
         form.tech_area.data = db[id]['tech_area']
         t = db[id]['startdate']
@@ -826,7 +826,7 @@ def edit_event(id):
         if request.method == 'POST':
             event_name = request.form['event_name']
             sponsorship_amount = request.form['sponsorship_amount']
-            college = request.form['college']
+            institution = request.form['institution'] 
             no_of_participants = request.form['no_of_participants']
             startdate = request.form['startdate']
             enddate = request.form['enddate']
@@ -836,7 +836,7 @@ def edit_event(id):
             doc = db[id]
             doc['event_name'] = event_name
             doc['sponsorship_amount'] =sponsorship_amount
-            doc['college'] = college
+            doc['college'] = institution 
             doc['tech_area'] = tech_area
             doc['no_of_participants'] = no_of_participants
             doc['startdate'] = startdate
