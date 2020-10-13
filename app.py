@@ -24,8 +24,8 @@ def make_session_permanent():
 
 def authorizeCouch():
     couchserver = couchdb.Server("http://localhost:5984/")
-    user = "stuti"
-    password = "stuti"
+    user = "admin"
+    password = "admin"
     return couchdb.Server("http://%s:%s@localhost:5984/" % (user, password))
 
 def dbCreate(dbname,couchserver):
@@ -361,7 +361,7 @@ class EventForm(Form):
     box_location_atten = StringField('Box location for Attendee list', [validators.Length(min=1, max=500), validators.DataRequired()])
     box_location_feed = StringField('Box location for Feedback',[validators.Length(min=1, max=500), validators.DataRequired()])
     box_location_winning_profile = StringField('Box location for Winning team profiles',[validators.Length(min=1, max=500), validators.DataRequired()])
-    sponsorship_amount = StringField('Sponsorship Amount', [validators.Length(min=5, max=500), validators.DataRequired()],default='INR  ')
+    sponsorship_amount = StringField('Sponsorship Amount', [validators.Length(min=5, max=500), validators.DataRequired()], render_kw={"placeholder": "INR"})
 
     hackathon_name = StringField('Hackathon Name', [validators.Length(min=1, max=200), validators.DataRequired()])
     
