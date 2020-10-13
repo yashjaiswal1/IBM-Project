@@ -485,7 +485,7 @@ def add_event():
             enddate = str(form.enddate.data)
             sponsorship_amount = form.sponsorship_amount.data
             topic = form.topic.data
-            doc = {'username': 'stuti', 'event_name': event_name, 'college': college,'tech_area' : tech_area ,
+            doc = {'username': session['username'], 'event_name': event_name, 'college': college,'tech_area' : tech_area ,
                    'no_of_participants': no_of_participants, 'enddate': enddate, 'startdate': startdate,
                    'status': status, 'sponsorship_amount': sponsorship_amount,'status': status,
                    'event_posted' : event_posted,'comments' : comments ,'event_socialising' : event_socialising,'topic':topic, 'type': 'event'}
