@@ -1,5 +1,5 @@
 {% extends 'layout.html' %} {% block body %}
-<h1>Add Event<br /></h1>
+<h1 style="font-size: 50px;">Add Event<br /></h1>
 
 <label class="control-label col-sm-4">Event Type</label>
 {% from "includes/_formhelpers.html" import render_field %}
@@ -108,6 +108,11 @@
 <div id="tech_session" class="form-popup">
   <form method="POST" action="/tech_session">
     <div class="form-horizontal">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <h2><u>Event Details</u></h2>
+        </div>
+      </div>
       <div class="col-sm-6">
         <div class="form-group">
           <div class="col-sm-8">
@@ -130,29 +135,95 @@
         </div>
       </div>
       <div class="col-sm-6">
+        <!-- <div class="form-group">
+          <div class="col-sm-8">
+            {{ render_field(form.speaker_name, class_="form-control") }}
+            <span
+              ><button class="btn btn-warning add_speaker_button btn-sm">
+                Add More
+              </button></span
+            >
+            <div class="speaker-wrap"></div>
+          </div>
+        </div> -->
+        <div class="col-sm-3">
+          <div class="form-group" style="width: 150px;">
+            {{ render_field(form.startdate, class_="form-control") }}
+          </div>
+        </div>
+        <div class="col-sm-3 col-sm-offset-1">
+          <div class="form-group" style="width: 150px;">
+            {{ render_field(form.enddate, class_="form-control") }}
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
         <div class="form-group">
           <div class="col-sm-8">
-            {{ render_field(form.technology, class_="form-control") }}
+            {{ render_field(form.topic, class_="form-control") }}
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <div class="col-sm-8">
+            {{ render_field(form.theme, class_="form-control") }}
           </div>
         </div>
       </div>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-4">
       <div class="form-group">
         {{ render_field(form.no_of_participants, class_="form-control") }}
       </div>
     </div>
-    <div class="col-sm-2">
+
+    <div class="form-group">
+      <div class="col-sm-4 col-sm-offset-2">
+        {{ render_field(form.speaker_name, class_="form-control",
+        placeholder="Speaker Name") }}
+        <span
+          ><button
+            style="margin-top: 5px;"
+            class="btn btn-warning add_speaker_button btn-sm"
+          >
+            Add More
+          </button></span
+        >
+        <div class="speaker-wrap"></div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <br />
       <div class="form-group">
-        {{ render_field(form.startdate, class_="form-control") }}
+        {{ render_field(form.ibm_sme_name, class_="form-control") }}
       </div>
     </div>
     <div class="col-sm-2">
+      <br />
       <div class="form-group">
-        {{ render_field(form.enddate, class_="form-control") }}
+        {{ render_field(form.bu, class_="form-control") }}
       </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-3">
+      <br />
+      <div class="form-group">
+        {{ render_field(form.box_location_atten, class_="form-control") }}
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <br />
+      <div class="form-group" style="width: 200px;">
+        {{ render_field(form.box_location_feed, class_="form-control") }}
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <br /><br />
+      <div class="form-group">
+        <h2><u>Event Status</u></h2>
+      </div>
+    </div>
+    <div class="col-sm-3">
       <div class="form-group">
         <p><b>Status</b></p>
         <div class="col-sm-8">
@@ -160,7 +231,44 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-3">
+      <div class="form-group">
+        <p><b>Event Posted on Portal?</b></p>
+        <div class="col-sm-8">
+          {{ form.portal_status }}
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <p><b>Post Event Socialising?</b></p>
+        <div class="col-sm-10">
+          <div id="UrlField1" style="display: block;">
+            <div style="float: left;">
+              <!-- <input
+                type="text"
+                class="form-control"
+                placeholder="Social media post URL "
+              /> -->
+              {{ render_field(form.url_list, class_="form-control",
+              placeholder="Social media post URL") }}
+              <br />
+            </div>
+            <div style="float: right;">
+              <br />
+              <button class="btn btn-warning add_more_url btn-sm">
+                Add More
+              </button>
+            </div>
+            <br />
+            <div class="url-wrap" style="margin-top: 20px;"></div>
+          </div>
+          <br /><br />
+          {{ form.post_event_social(onchange="toggleUrlField('UrlField1')") }}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-sm-2">
       <div class="form-group">
         {{ render_field(form.ibm_sme_name, class_="form-control") }}
       </div>
@@ -178,6 +286,27 @@
     <div class="col-sm-3">
       <div class="form-group">
         {{ render_field(form.box_location_feed, class_="form-control") }}
+      </div>
+    </div> -->
+    <div class="col-sm-12">
+      <br /><br />
+      <div class="form-group">
+        <h2><u>Testimonials</u></h2>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback1, class_="form-control") }}
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback2, class_="form-control") }}
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback3, class_="form-control") }}
       </div>
     </div>
 
@@ -465,5 +594,16 @@
 </div>
 
 <div id="test" class="form-group"></div>
+
+<!-- toggles visibility of URL Field under Post Event Socialising?  -->
+<script>
+  function toggleUrlField(elementID) {
+    if (document.getElementById(elementID).style.display == "block") {
+      document.getElementById(elementID).style.display = "none";
+    } else {
+      document.getElementById(elementID).style.display = "block";
+    }
+  }
+</script>
 
 {% endblock %}

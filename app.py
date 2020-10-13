@@ -352,7 +352,7 @@ def dashboard():
 class EventForm(Form):
     events = SelectField('Events', choices=[("Technical Fest","Technical Fest"), ("Conference","Conference"),  ("Tech Session", "Tech Session"), ("Tech Workshop", "Tech Workshop"), ("Hackathon", "Hackathon"), ("SUR", "SUR")])
     event_name = StringField('Event Name', [validators.Length(min=1, max=200), validators.DataRequired()])
-    tech_session_name = StringField('Tech Session / Workshop name', [validators.Length(min=1, max=200), validators.DataRequired()])
+    tech_session_name = StringField('Tech Session / Workshop Name', [validators.Length(min=1, max=200), validators.DataRequired()])
     ibm_sme_name = StringField('IBM SME Name',[validators.Length(min=1, max=200), validators.DataRequired()])
     bu = SelectField(
         'BU',
@@ -375,6 +375,7 @@ class EventForm(Form):
     no_of_finalist = IntegerField('No of Finalist',
                                    [validators.NumberRange(min=1), validators.DataRequired()])
     finaledate = DateField('Finale Date', [validators.DataRequired()], default=datetime.date.today, format='%Y-%m-%d')
+    speaker_name = StringField('Speakers', [validators.Length(min=1, max=200), validators.DataRequired()])
     jury_name = StringField('Jury', [validators.Length(min=1, max=200), validators.DataRequired()])
     additional_jury_name = StringField('Additional Jury', [validators.Length(min=1, max=200)])
     winning_team_details = StringField('Winning Team Details', [validators.Length(min=1, max=200), validators.DataRequired()])
@@ -386,7 +387,9 @@ class EventForm(Form):
     project_enddate = DateField('Project End Date', [validators.DataRequired()], default=datetime.date.today, format='%Y-%m-%d')
     fromdate = DateField('From Date',default = datetime.date.today, format='%Y-%m-%d')
     todate = DateField('To Date', default = datetime.date.today, format='%Y-%m-%d')
-    status = RadioField('Status', [validators.DataRequired()], choices= [('Planned', 'Planned'), ('In Progress', 'In Progress'),('Completed','Completed')],default='Planned')
+    status = RadioField('Status', [validators.DataRequired()], choices= [('Planned', 'Planned'), ('In Progress', 'In Progress'),('Completed','Completed'), ('Cancelled','Cancelled')],default='Planned')
+    portal_status = RadioField('Event Posted on Portal?', [validators.DataRequired()], choices= [('Yes', 'Yes'), ('No', 'No')],default='Yes')
+    post_event_social = RadioField('Post Event Socialising?', [validators.DataRequired()], choices= [('Yes', 'Yes'), ('No', 'No')],default='Yes')
     list_of_events  = SelectField('List of Events', choices=[])
     theme  = SelectField('Theme',[validators.DataRequired()], choices=[('AI', 'AI'), ('Blockchain', 'Blockchain'), ('Cloud', 'Cloud'), ('Security', 'Security'), ('Project Management', 'Project Management'), ('Others', 'Others')])
     topic = StringField('Topic', [validators.Length(min=3), validators.DataRequired()])
@@ -424,6 +427,18 @@ class EventForm(Form):
                                  default='Rejected')
     travel_request = BooleanField('Travel Request')
     po_request = BooleanField('PO Request')
+    feedback1 = TextAreaField('Feedback #1', [validators.Length(min=3)])
+    feedback2 = TextAreaField('Feedback #2', [validators.Length(min=3)])
+    feedback3 = TextAreaField('Feedback #3', [validators.Length(min=3)])
+    url_list = StringField('', [validators.Length(min=3), validators.DataRequired()])
+    # add url_list for form data intake
+    # implement edit functionality for /tech_session
+    # pull/fetch changes from Stuti
+    # implement everything in /hackathon
+    # implement Dashboard
+    # implement Parent-Child relationship
+    # implement Export operations for pdf, excel files etc.
+
 
 
     def validate_on_submit(self):
@@ -466,7 +481,7 @@ def add_event():
             enddate = str(form.enddate.data)
             sponsorship_amount = form.sponsorship_amount.data
             topic = form.topic.data
-            doc = {'username': session['username'], 'event_name': event_name, 'college': college,
+            doc = {'event_name': event_name, 'college': college,
                    'no_of_participants': no_of_participants, 'enddate': enddate, 'startdate': startdate,
                    'status': status, 'sponsorship_amount': sponsorship_amount, 'topic':topic, 'type': 'event'}
             db.save(doc)
@@ -560,7 +575,7 @@ def sur_event():
 
 
 @app.route('/tech_session', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def tech_session():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -570,20 +585,32 @@ def tech_session():
         event_name = form.tech_session_name.data
         college = form.college.data
         list_of_events = form.list_of_events.data
+        theme = form.theme.data
+        topic = form.topic.data
+        speaker_name = request.form.getlist('speaker_name')
         no_of_participants = str(form.no_of_participants.data)
         startdate = str(form.startdate.data)
-        status = form.status.data
         enddate = str(form.enddate.data)
-        technology = form.technology.data
+        status = form.status.data
+        portal_status = form.portal_status.data
+        post_event_social = form.post_event_social.data
+        if (post_event_social == 'Yes'):
+            url_list = request.form.getlist('url_list')
+        else:
+            url_list = 'None'
+        # technology = form.technology.data
         bu = form.bu.data
         ibm_sme_name = form.ibm_sme_name.data
         box_location_atten = form.box_location_atten.data
         box_location_feed = form.box_location_feed.data
-        box_location_winning_profile = form.box_location_winning_profile.data
-        doc = {'username': session['username'], 'event_name': event_name,'main_event':list_of_events, 'college': college,
-               'no_of_participants': no_of_participants,'startdate': startdate,'enddate': enddate,'technology':technology,
-               'bu' : bu, 'status':status, 'ibm_sme_name' : ibm_sme_name, 'box_location_atten' : box_location_atten,'box_location_winning_profile':box_location_winning_profile,
-               'box_location_feed' : box_location_feed,
+        feedback1 = form.feedback1.data
+        feedback2 = form.feedback2.data
+        feedback3 = form.feedback3.data
+        # box_location_winning_profile = form.box_location_winning_profile.data
+        doc = {'event_name': event_name,'main_event':list_of_events, 'college': college, 'theme': theme, 'topic': topic,
+               'speaker_name': speaker_name,'no_of_participants': no_of_participants,'startdate': startdate,'enddate': enddate,'portal_status':portal_status,
+               'status':status, 'url_list': url_list, 'bu' : bu, 'post_event_social':post_event_social, 'ibm_sme_name' : ibm_sme_name, 'box_location_atten' : box_location_atten,
+               'box_location_feed' : box_location_feed, 'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3,
                'type': 'tech Session'}
         db.save(doc)
         flash('Event Created', 'success')
@@ -636,7 +663,7 @@ def hackathon():
 
 # Edit Event
 @app.route('/edit_event/<string:id>', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def edit_event(id):
     form = EventForm(request.form)
     print(db[id]['type'])
@@ -754,13 +781,22 @@ def edit_event(id):
                                                                     "%Y%m%d")
         form.enddate.data = datetime.datetime.strptime(db[id]['enddate'].replace('-', ''),
                                                          "%Y%m%d")
-        form.technology.data = db[id]['technology']
-        form.bu.data = db[id]['bu']
+        # form.technology.data = db[id]['technology']
+        form.theme.data = db[id]['theme']
+        form.topic.data = db[id]['topic']
+        form.speaker_name.data = db[id]['speaker_name']
         form.status.data = db[id]['status']
+        form.portal_status.data = db[id]['portal_status']
+        form.url_list.data = db[id]['url_list']
+        form.bu.data = db[id]['bu']
         form.ibm_sme_name.data = db[id]['ibm_sme_name']
         form.box_location_atten.data = db[id]['box_location_atten']
         form.box_location_feed.data = db[id]['box_location_feed']
         form.type_of_event.data = 'tech_session'
+        form.feedback1.data = db[id]['feedback1']
+        form.feedback2.data = db[id]['feedback2']
+        form.feedback3.data = db[id]['feedback3']
+
         if request.method == 'POST':
             doc = db[id]
             doc['event_name'] = request.form['tech_session_name']
@@ -770,12 +806,20 @@ def edit_event(id):
             if form.validate_on_submit() == True:
                 doc['startdate'] = request.form['startdate']
                 doc['enddate'] = request.form['enddate']
+                doc['theme'] = request.form('theme')
+                doc['topic'] = request.form('topic')
+                doc['speaker_name'] = request.form('speaker_name')
                 doc['status'] = request.form['status']
+                doc['portal_status'] = request.form['portal_status']
+                doc['url_list'] = request.form['url_list']
                 doc['ibm_sme_name'] = request.form['ibm_sme_name']
-                doc['technology'] = request.form['technology']
+                # doc['technology'] = request.form['technology']
                 doc['bu'] = request.form['bu']
                 doc['box_location_atten'] = request.form['box_location_atten']
                 doc['box_location_feed'] = request.form['box_location_feed']
+                doc['feedback1'] = request.form['feedback1']
+                doc['feedback2'] = request.form['feedback2']
+                doc['feedback3'] = request.form['feedback3']
                 db.save(doc)
                 print(doc)
                 flash('Event Updated', 'info')
@@ -838,7 +882,7 @@ def edit_event(id):
 
 # Delete Event
 @app.route('/delete_event/<string:id>', methods=['POST'])
-@is_logged_in
+# @is_logged_in
 def delete_event(id):
     doc = db[id]
     db.delete(doc)
