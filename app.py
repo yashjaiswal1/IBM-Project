@@ -295,7 +295,7 @@ def datesubmit():
 
 # Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def dashboard():
     event_type_list = ['event', 'tech Session', 'Hackathon']
     form = EventForm(request.form)
@@ -460,7 +460,7 @@ class EventForm(Form):
 
 # Add Event
 @app.route('/add_event', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def add_event():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -501,7 +501,7 @@ def add_event():
 
 
 @app.route('/sme_details', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def sme_details():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -534,7 +534,7 @@ def sme_details():
 
 
 @app.route('/sur_event', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def sur_event():
     form = EventForm(request.form)
     if request.method == 'POST':
@@ -580,7 +580,7 @@ def sur_event():
 
 
 @app.route('/tech_session', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def tech_session():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -612,7 +612,7 @@ def tech_session():
     return render_template('add_event.html', form=form)
 
 @app.route('/hackathon', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def hackathon():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -656,7 +656,7 @@ def hackathon():
 
 # Edit Event
 @app.route('/edit_event/<string:id>', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def edit_event(id):
     form = EventForm(request.form)
     print(db[id]['type'])
@@ -862,7 +862,7 @@ def edit_event(id):
 
 # Delete Event
 @app.route('/delete_event/<string:id>', methods=['POST'])
-# @is_logged_in
+@is_logged_in
 def delete_event(id):
     doc = db[id]
     db.delete(doc)
