@@ -5,60 +5,260 @@
   style="{% if form.type_of_event.data == 'event' %} display: block;
                 {% else %} display: none; {% endif %}"
 >
-  <form method="POST" action="">
-    <div class="form-horizontal">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <div class="col-sm-8">
-            {{ render_field(form.event_name, class_="form-control") }}
+  <!-- <form method="POST" action="">
+    <div class="edit_event_details">
+      <div class="container">
+        <div class="row">
+          <h3><u>Edit Event Details</u><br /></h3>
+
+          <div class="form-horizontal">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.event_name, class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.sponsorship_amount,
+                  class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.college, class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.theme, class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.no_of_participants,
+                  class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-4">
+                  {{ render_field(form.startdate, class_="form-control") }}
+                </div>
+                <div class="col-sm-4">
+                  {{ render_field(form.enddate, class_="form-control") }}
+                </div>
+              </div>
+            </div>
           </div>
+          for form-horizontal
         </div>
       </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <div class="col-sm-8">
-            {{ render_field(form.sponsorship_amount, class_="form-control") }}
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <div class="col-sm-8">
-            {{ render_field(form.college, class_="form-control") }}
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <div class="col-sm-8">
-            {{ render_field(form.no_of_participants, class_="form-control") }}
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-2">
-        <div class="form-group">
-          {{ render_field(form.startdate, class_="form-control") }}
-        </div>
-      </div>
-      <div class="col-sm-2">
-        <div class="form-group">
-          {{ render_field(form.enddate, class_="form-control") }}
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-offset-2">
-        <div class="form-group">
-          <p><b>Status</b></p>
-          <div class="col-sm-8">
+    </div>
+    for edit_event_details
+
+    <div class="edit_event_status">
+      <div class="container">
+        <div class="row">
+          <h3><u>Edit Event Status</u></h3>
+          <div class="col-sm-4">
+            <p><b>Status</b></p>
             {{ form.status }}
           </div>
         </div>
       </div>
-      <div class="col-sm-12">
-        <p>
-          <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
-        </p>
+    </div>
+
+    <div class="col-sm-12">
+      <p>
+        <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+      </p>
+    </div>
+  </form> -->
+  <form method="POST" action="">
+    <div class="event_details">
+      <div class="container">
+        <div class="row">
+          <h2><u>Event Details</u><br /></h2>
+          <div class="form-horizontal">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.event_name, class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.sponsorship_amount,
+                  class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.college, class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.theme, class_="form-control") }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-4">
+                  {{ render_field(form.startdate, class_="form-control") }}
+                </div>
+                <div class="col-sm-4">
+                  {{ render_field(form.enddate, class_="form-control") }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <br /><br />
+    <div class="event_status">
+      <div class="container">
+        <div class="row">
+          <h2><u>Event Status</u></h2>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <p><b>Status</b></p>
+              {{ form.status }}
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="form-group">
+              <p><b>Event Posted on Portal?</b></p>
+              <!-- <input type="radio" id="yes" value="yes" name="event_portal" />
+              <label for="yes">Yes</label><br />
+              <input type="radio" id="no" value="no" name="event_portal" />
+              <label for="no">No</label> -->
+              <div class="col-sm-8">
+                {{ form.portal_status }}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="form-group">
+              <p><b>Post event socialising?</b></p>
+              <!-- <input
+                type="radio"
+                id="yes"
+                value="yes"
+                name="post_event"
+                onclick="showlinks()"
+              />
+              <label for="yes">Yes</label><br />
+              <input
+                type="radio"
+                id="no"
+                name="post_event"
+                value="no"
+                onclick="hidelinks()"
+              />
+              <label for="no">No</label>
+              <p id="links" style="display: none;">---LINKS HERE---</p> -->
+              <div class="col-sm-10">
+                <div id="UrlField1" style="display: block;">
+                  <div style="float: left;">
+                    <!-- <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Social media post URL "
+                    /> -->
+                    {{ render_field(form.url_list, class_="form-control",
+                    placeholder="Social media post URL") }}
+                    <br />
+                  </div>
+                  <div style="float: right;">
+                    <br />
+                    <button class="btn btn-warning add_more_url btn-sm">
+                      Add More
+                    </button>
+                  </div>
+                  <br />
+                  <div class="url-wrap" style="margin-top: 20px;"></div>
+                </div>
+                <br /><br />
+                {{
+                form.post_event_social(onchange="toggleUrlField('UrlField1')")
+                }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="myform_comments">
+      <div class="container">
+        <div class="row">
+          <h4><b>Comments</b></h4>
+          {{ form.comments(rows='3',columns='90') }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <center>
+        <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+      </center>
+    </div> -->
+    <div class="col-sm-12">
+      <br /><br />
+      <div class="form-group">
+        <h2><u>Testimonials</u></h2>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback1, class_="form-control") }}
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback2, class_="form-control") }}
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback3, class_="form-control") }}
+      </div>
+    </div>
+
+    <div class="col-sm-12">
+      <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+    </div>
+    <div class="col-sm-4"></div>
   </form>
 </div>
 
@@ -68,7 +268,7 @@
                 {% else %} display: none;
                     {% endif %}"
 >
-  <form method="POST" action="/tech_session">
+  <form method="POST" action="">
     <div class="form-horizontal">
       <div class="col-sm-12">
         <div class="form-group">

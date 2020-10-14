@@ -11,6 +11,7 @@ import datetime
 import pandas as pd
 
 app = Flask(__name__)
+app.secret_key = 'secret123'
 #couch = couchdb.Server()
 # Using Database
 #db = couch['events']
@@ -360,9 +361,21 @@ class EventForm(Form):
     box_location_atten = StringField('Box location for Attendee list', [validators.Length(min=1, max=500), validators.DataRequired()])
     box_location_feed = StringField('Box location for Feedback',[validators.Length(min=1, max=500), validators.DataRequired()])
     box_location_winning_profile = StringField('Box location for Winning team profiles',[validators.Length(min=1, max=500), validators.DataRequired()])
-    sponsorship_amount = StringField('Sponsorship Amount', [validators.Length(min=5, max=500), validators.DataRequired()],default='INR  ')
+    sponsorship_amount = StringField('Sponsorship Amount', [validators.Length(min=5, max=500), validators.DataRequired()], render_kw={"placeholder": "INR"})
 
     hackathon_name = StringField('Hackathon Name', [validators.Length(min=1, max=200), validators.DataRequired()])
+    
+    #----------tech workshop---------
+    institution = StringField('Institution',[validators.Length(min=1),validators.DataRequired()])
+    tech_area = StringField('Technology', [validators.Length(min=1), validators.DataRequired()])
+    no_of_sessions = StringField('Number of sessions', [validators.Length(min=1), validators.DataRequired()])
+    # no_of_attendees = IntegerField('Number of attendees', [validators.Length(min=1), validators.DataRequired()])
+    event_posted = RadioField('Event posted on portal', [validators.DataRequired()], choices= [('Yes', 'Yes'), ('No', 'No')])
+    event_socialising = RadioField('Post event socialising?', [validators.DataRequired()], choices= [('Yes', 'Yes'), ('No', 'No')])
+    comments = TextAreaField('Comments',default='None')
+    #-----------END of TECH FEST------------------------
+
+
     college = SelectField('College',[validators.DataRequired()], choices=[])
     college_name = StringField('College Name', [validators.Length(min=3), validators.DataRequired()])
     college_category = SelectField('College Category', choices=[("Platinum","Platinum"), ("Gold","Gold"),  ("Silver", "Silver")])
@@ -466,6 +479,7 @@ class EventForm(Form):
 def add_event():
     form = EventForm(request.form)
     form.college.choices = college_call()
+    form.institution.choices=college_call()
     form.list_of_events.choices = events_call()
     error = None
     if request.method == 'POST':
@@ -474,6 +488,20 @@ def add_event():
         # no_of_participants = form.no_of_participants.data
         # startdate = str(form.startdate.data)
         # enddate = str(form.enddate.data)
+        theme = form.theme.data 
+        # event_posted = form.event_posted.data
+        # event_posted=request.form['event_portal']
+        # comments = form.comments.data
+        portal_status = form.portal_status.data
+        post_event_social = form.post_event_social.data
+        if (post_event_social == 'Yes'):
+            url_list = request.form.getlist('url_list')
+        else:
+            url_list = 'None'
+        feedback1 = form.feedback1.data
+        feedback2 = form.feedback2.data
+        feedback3 = form.feedback3.data
+        # event_socialising = request.form['post_event']
         if form.validate_on_submit()==True:
             no_of_participants = str(form.no_of_participants.data)
             status = form.status.data
@@ -481,9 +509,13 @@ def add_event():
             enddate = str(form.enddate.data)
             sponsorship_amount = form.sponsorship_amount.data
             topic = form.topic.data
-            doc = {'event_name': event_name, 'college': college,
+            # doc = {'username': session['username'],       commented out temporarily
+            # compute total number of participants and add them here
+            doc = {'event_name': event_name, 'college': college,'theme' : theme ,
                    'no_of_participants': no_of_participants, 'enddate': enddate, 'startdate': startdate,
-                   'status': status, 'sponsorship_amount': sponsorship_amount, 'topic':topic, 'type': 'event'}
+                   'status': status, 'sponsorship_amount': sponsorship_amount,'status': status,
+                   'portal_status' : portal_status ,'post_event_social' : post_event_social,'topic':topic, 'type': 'event',
+                   'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3}
             db.save(doc)
             flash('Event Created', 'success')
             return redirect(url_for('dashboard'))
@@ -806,9 +838,9 @@ def edit_event(id):
             if form.validate_on_submit() == True:
                 doc['startdate'] = request.form['startdate']
                 doc['enddate'] = request.form['enddate']
-                doc['theme'] = request.form('theme')
-                doc['topic'] = request.form('topic')
-                doc['speaker_name'] = request.form('speaker_name')
+                doc['theme'] = request.form['theme']
+                doc['topic'] = request.form['topic']
+                doc['speaker_name'] = request.form['speaker_name']
                 doc['status'] = request.form['status']
                 doc['portal_status'] = request.form['portal_status']
                 doc['url_list'] = request.form['url_list']
@@ -828,14 +860,18 @@ def edit_event(id):
             else:
                 error = "Start date is greater than End date"
             return render_template('add_event.html', form=form, error=error)
+    
+    # compute total number of participants and add them here
+    # resolve url_list error
     else:
         result = db[id]
         form = EventForm(request.form)
         form.event_name.data = db[id]['event_name']
         form.sponsorship_amount.data = db[id]['sponsorship_amount']
-        form.college.data = db[id]['college']
+        form.college.data = db[id]['college'] 
         form.college.choices = college_call()
         form.no_of_participants.data = db[id]['no_of_participants']
+        form.theme.data = db[id]['theme']
         t = db[id]['startdate']
         t = t.replace('-', '')
         s = datetime.datetime.strptime(t, "%Y%m%d")
@@ -845,24 +881,34 @@ def edit_event(id):
         s = datetime.datetime.strptime(t, "%Y%m%d")
         form.enddate.data = s
         form.status.data = db[id]['status']
+        form.portal_status.data = db[id]['portal_status']
+        # form.url_list.data = db[id]['url_list']
         form.type_of_event.data = 'event'
         if request.method == 'POST':
             event_name = request.form['event_name']
             sponsorship_amount = request.form['sponsorship_amount']
-            college = request.form['college']
-            no_of_participants = request.form['no_of_participants']
+            college = request.form['college'] 
+            # no_of_participants = request.form['no_of_participants']
             startdate = request.form['startdate']
             enddate = request.form['enddate']
             status = request.form['status']
+            portal_status = request.form['portal_status']
+            # url_list = request.form['url_list']
+            theme = request.form['theme']
 
             doc = db[id]
             doc['event_name'] = event_name
             doc['sponsorship_amount'] =sponsorship_amount
-            doc['college'] = college
-            doc['no_of_participants'] = no_of_participants
+            doc['college'] = college 
+            doc['theme'] = theme
+            # doc['no_of_participants'] = no_of_participants
             doc['startdate'] = startdate
             doc['enddate'] = enddate
             doc['status'] = status
+            doc['portal_status'] = portal_status
+            # doc['url_list'] = url_list
+            
+
             db.save(doc)
             flash('Event Updated', 'info')
 
@@ -1010,5 +1056,4 @@ def downloadexcel():
 
 
 if __name__ == '__main__':
-    app.secret_key = 'secret123'
     app.run(host='0.0.0.0',port=2222,debug=True)
