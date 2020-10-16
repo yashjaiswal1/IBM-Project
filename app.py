@@ -190,7 +190,7 @@ def edit_college1(id):
         doc['region'] = region
         for i in db:
             if db[i]['type']=='admin_college_add':
-                if db[i]['college_name'] == college_name and db[i]['college_category'] == college_category and db[i]['city'] == city:
+                if db[i]['college_name'] == college_name and db[i]['college_category'] == college_category and db[i]['city'] == city and db[i]['ur_spoc'] == ur_spoc and db[i]['region'] == region:
                     flash('College Already Exists', 'danger')
                     return redirect(url_for('editcollege'))
         db.save(doc)
@@ -302,6 +302,9 @@ def dashboard():
     if request.method == 'POST':
         fromdate = str(form.fromdate.data)
         todate = str(form.todate.data)
+        if (fromdate > todate):
+            flash('From Date cannot be greater than To Date', 'danger')
+            return redirect(url_for('dashboard'))
         event_type = form.event_types.data
         print(event_type)
         print(fromdate)
@@ -375,6 +378,22 @@ class EventForm(Form):
     comments = TextAreaField('Comments',default='None')
     #-----------END of TECH FEST------------------------
 
+    #----------Hackathon---------
+    # First Prize Winners
+    team_name1 = StringField('Team Name', [validators.Length(min=1), validators.DataRequired()])
+    team_member_name1 = StringField('Member Name', [validators.Length(min=1), validators.DataRequired()])
+    team_member_college1 = StringField('College', [validators.Length(min=1), validators.DataRequired()])
+
+    # Second Prize Winners
+    team_name2 = StringField('Team Name', [validators.Length(min=1), validators.DataRequired()])
+    team_member_name2 = StringField('Member Name', [validators.Length(min=1), validators.DataRequired()])
+    team_member_college2 = StringField('College', [validators.Length(min=1), validators.DataRequired()])
+
+    # Third Prize Winners
+    team_name3 = StringField('Team Name', [validators.Length(min=1), validators.DataRequired()])
+    team_member_name3 = StringField('Member Name', [validators.Length(min=1), validators.DataRequired()])
+    team_member_college3 = StringField('College', [validators.Length(min=1), validators.DataRequired()])
+    #----------END---------
 
     college = SelectField('College',[validators.DataRequired()], choices=[])
     college_name = StringField('College Name', [validators.Length(min=3), validators.DataRequired()])
@@ -385,7 +404,7 @@ class EventForm(Form):
     no_of_participants = IntegerField('No of participants', [validators.NumberRange(min=1), validators.DataRequired()])
     no_of_registrations = IntegerField('No of registrations', [validators.NumberRange(min=1), validators.DataRequired()])
     no_of_abstracts = IntegerField('No of abstracts shortlisted',[validators.NumberRange(min=1), validators.DataRequired()])
-    no_of_finalist = IntegerField('No of Finalist',
+    no_of_finalist = IntegerField('No of Finalist Teams',
                                    [validators.NumberRange(min=1), validators.DataRequired()])
     finaledate = DateField('Finale Date', [validators.DataRequired()], default=datetime.date.today, format='%Y-%m-%d')
     speaker_name = StringField('Speakers', [validators.Length(min=1, max=200), validators.DataRequired()])
@@ -443,7 +462,7 @@ class EventForm(Form):
     feedback1 = TextAreaField('Feedback #1', [validators.Length(min=3)])
     feedback2 = TextAreaField('Feedback #2', [validators.Length(min=3)])
     feedback3 = TextAreaField('Feedback #3', [validators.Length(min=3)])
-    url_list = StringField('', [validators.Length(min=3), validators.DataRequired()])
+    url_list = StringField('', [validators.Length(min=3)])
     # add url_list for form data intake
     # implement edit functionality for /tech_session
     # pull/fetch changes from Stuti
@@ -651,7 +670,7 @@ def tech_session():
     return render_template('add_event.html', form=form)
 
 @app.route('/hackathon', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def hackathon():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -665,24 +684,49 @@ def hackathon():
         if form.validate_on_submit() == True:
             startdate = str(form.startdate.data)
             enddate = str(form.enddate.data)
-            technology = form.technology.data
+            theme = form.theme.data
             no_of_registrations = form.no_of_registrations.data
             no_of_abstracts = form.no_of_abstracts.data
             no_of_finalist = form.no_of_finalist.data
             finaledate = str(form.finaledate.data)
+            if ((finaledate > enddate) or (finaledate < startdate)):
+                flash('Hackathon Finale Date should lie within the Start Date and End Date', 'danger')
+                return redirect(url_for('hackathon'))
             jury = request.form.getlist('jury_name')
             bu = request.form.getlist('bu')
             list_ibm_jury = [x for x in zip(jury,bu)]
-            status = form.status.data
-            additional_jury = form.additional_jury_name.data
-            winning_team_details = form.winning_team_details.data
-            runnerup_team_details = form.runnerup_team_details.data
+            team_name1 = form.team_name1.data
+            team_member_name1 = request.form.getlist('team_member_name1')
+            team_member_college1 = request.form.getlist('team_member_college1')
+            list_team1 = [x for x in zip(team_member_name1,team_member_college1)]
+            team_name2 = form.team_name2.data
+            team_member_name2 = request.form.getlist('team_member_name2')
+            team_member_college2 = request.form.getlist('team_member_college2')
+            list_team2 = [x for x in zip(team_member_name2,team_member_college2)]
+            team_name3 = form.team_name3.data
+            team_member_name3 = request.form.getlist('team_member_name3')
+            team_member_college3 = request.form.getlist('team_member_college3')
+            list_team3 = [x for x in zip(team_member_name3,team_member_college3)]
             winning_team_profiles = form.box_location_winning_profile.data
-            doc = {'username': session['username'], 'Hackathon_name': hackathon_name,'main_event':list_of_events, 'college': college,
-                   'no_of_participants': no_of_participants,'no_of_registrations': no_of_registrations,'status':status, 'additional_jury':additional_jury,
+            status = form.status.data
+            portal_status = form.portal_status.data
+            post_event_social = form.post_event_social.data
+            if (post_event_social == 'Yes'):
+                url_list = request.form.getlist('url_list')
+            else:
+                url_list = 'None'
+            feedback1 = form.feedback1.data
+            feedback2 = form.feedback2.data
+            feedback3 = form.feedback3.data
+            # additional_jury = form.additional_jury_name.data
+            # winning_team_details = form.winning_team_details.data
+            # runnerup_team_details = form.runnerup_team_details.data
+            doc = {'Hackathon_name': hackathon_name,'main_event':list_of_events, 'college': college,
+                   'no_of_participants': no_of_participants,'no_of_registrations': no_of_registrations,'status':status, 'url_list': url_list,'portal_status':portal_status,
                    'no_of_abstracts': no_of_abstracts, 'no_of_finalist': no_of_finalist,
-                   'startdate': startdate,'enddate': enddate,'finaledate': finaledate,'technology':technology,
-                   'jury' : list_ibm_jury, 'winning_team_details' : winning_team_details, 'runnerup_team_details' : runnerup_team_details,
+                   'startdate': startdate,'enddate': enddate,'finaledate': finaledate,'theme':theme,
+                   'jury' : list_ibm_jury, 'team_name1': team_name1, 'list_team1': list_team1, 'team_name2': team_name2, 'list_team2': list_team2, 'team_name3': team_name3, 'list_team3': list_team3,
+                   'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3,
                    'winning_team_profiles':winning_team_profiles,'type': 'Hackathon'}
             db.save(doc)
             flash('Event Created', 'success')

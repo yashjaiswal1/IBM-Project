@@ -13,8 +13,8 @@
           class="form-control"
           onchange="showTable(this)"
         >
-          <option value="Technical_Fest">Technical Fest</option>
-          <option value="Tech_Session">Tech Session</option>
+          <option value="Technical_Fest">Technical Fest / Conference</option>
+          <option value="Tech_Session">Tech Session / Workshop</option>
           <option value="Hackathon">Hackathon</option>
           <option value="SUR">SUR</option>
         </select>
@@ -136,25 +136,31 @@
 <div id="hackathon" class="table-popup">
   <table class="table table-striped">
     <tr>
+      <th>Parent Event</th>
       <th>Hackathon</th>
       <th>College</th>
       <th># of registrations</th>
       <th>Finale Date</th>
-      <th>Technology</th>
+      <th>Theme</th>
       <th>Jury</th>
-      <th>Winning team</th>
+      <th>Winning Team</th>
       <th></th>
       <th></th>
     </tr>
     {% for event in events %} {% if event.type == 'Hackathon' %}
     <tr>
+      <td>{{event.main_event}}</td>
       <td>{{event.Hackathon_name}}</td>
       <td>{{event.college}}</td>
       <td>{{event.no_of_registrations}}</td>
       <td>{{event.finaledate}}</td>
-      <td>{{event.technology}}</td>
-      <td>{{event.jury}}</td>
-      <td>{{event.winning_team_details}}</td>
+      <td>{{event.theme}}</td>
+      <td>
+        {% for name in event.jury %}
+        <li>{{name[0]}}</li>
+        {% endfor %}
+      </td>
+      <td>{{event.team_name1}}</td>
       <td>
         <a href="edit_event/{{event.id}}" class="btn btn-default pull-right"
           >Edit</a
@@ -208,4 +214,7 @@
     {% endif %} {% endfor %}
   </table>
 </div>
+<form method="get" action="/add_event">
+  <button class="btn btn-primary" type="submit">Add Event</button>
+</form>
 {% endblock %}

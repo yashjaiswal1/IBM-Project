@@ -194,7 +194,11 @@
     </div>
 
     <div class="col-sm-12">
-      <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+      <br /><br />
+      <center>
+        <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+      </center>
+      <br /><br />
     </div>
     <div class="col-sm-4"></div>
   </form>
@@ -432,7 +436,11 @@
     </div>
 
     <div class="col-sm-12">
-      <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+      <br /><br />
+      <center>
+        <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+      </center>
+      <br /><br />
     </div>
   </form>
 </div>
@@ -440,6 +448,7 @@
 <div id="HackathonForm" class="form-popup">
   <form method="POST" action="/hackathon">
     <div class="form-horizontal">
+      <h2><u>Event Details</u><br /></h2>
       <div class="col-sm-6">
         <div class="form-group">
           <div class="col-sm-8">
@@ -464,7 +473,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <div class="col-sm-8">
-            {{ render_field(form.technology, class_="form-control") }}
+            {{ render_field(form.theme, class_="form-control") }}
           </div>
         </div>
       </div>
@@ -472,7 +481,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <div class="col-sm-8">
-            {{ render_field(form.no_of_participants, class_="form-control") }}
+            {{ render_field(form.no_of_registrations, class_="form-control") }}
           </div>
         </div>
       </div>
@@ -487,24 +496,29 @@
         {{ render_field(form.enddate, class_="form-control") }}
       </div>
     </div>
-    <div class="col-sm-3">
-      <div class="form-group">
-        {{ render_field(form.no_of_registrations, class_="form-control") }}
-      </div>
+    <div class="row">
+      <div class="col-sm-12"></div>
     </div>
-    <div class="col-sm-3">
-      <div class="form-group">
-        {{ render_field(form.no_of_abstracts, class_="form-control") }}
+    <div class="row container">
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.no_of_participants, class_="form-control") }}
+        </div>
       </div>
-    </div>
-    <div class="col-sm-2">
-      <div class="form-group">
-        {{ render_field(form.no_of_finalist, class_="form-control") }}
+      <div class="col-sm-3">
+        <div class="form-group" style="width: 190px;">
+          {{ render_field(form.no_of_abstracts, class_="form-control") }}
+        </div>
       </div>
-    </div>
-    <div class="col-sm-2">
-      <div class="form-group">
-        {{ render_field(form.finaledate, class_="form-control") }}
+      <div class="col-sm-2 col-sm-offset-1">
+        <div class="form-group">
+          {{ render_field(form.no_of_finalist, class_="form-control") }}
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          {{ render_field(form.finaledate, class_="form-control") }}
+        </div>
       </div>
     </div>
     <div class="col-sm-6">
@@ -513,6 +527,7 @@
           <span
             >{{ render_field(form.jury_name, class_="form-control") }} {{
             render_field(form.bu, class_="form-control") }}
+            <br />
             <button class="btn btn-warning add_more_jury">
               Add More
             </button></span
@@ -521,14 +536,102 @@
         </div>
       </div>
     </div>
-
     <div class="col-sm-4">
-      <div class="form-group">
-        {{ render_field(form.additional_jury_name, class_="form-control") }}
+      {{ render_field(form.box_location_winning_profile, class_="form-control")
+      }}
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <br /><br />
+        <h2><u>Winners Details</u></h2>
+      </div>
+      <div class="col-sm-4">
+        <p style="font-size: 20px;"><b>First Prize Winners</b></p>
+        <div class="row">
+          <div class="col-sm-12">
+            {{ render_field(form.team_name1, class_="form-control",
+            placeholder="Team Name") }}
+            <br />
+          </div>
+
+          <div class="col-sm-6">
+            {{ render_field(form.team_member_name1, class_="form-control",
+            placeholder="Team Member") }}
+          </div>
+          <div class="col-sm-6">
+            {{ render_field(form.team_member_college1, class_="form-control",
+            placeholder="College") }}
+            <br />
+          </div>
+          <div class="member-wrap1" style="margin-top: 20px;"></div>
+        </div>
+
+        <button class="btn btn-warning add_more_members1">
+          Add More
+        </button>
+      </div>
+      <div class="col-sm-4">
+        <p style="font-size: 20px;"><b>Second Prize Winners</b></p>
+        <div class="row">
+          <div class="col-sm-12">
+            {{ render_field(form.team_name2, class_="form-control",
+            placeholder="Team Name") }}
+            <br />
+          </div>
+          <div class="col-sm-6">
+            {{ render_field(form.team_member_name2, class_="form-control",
+            placeholder="Team Member") }}
+          </div>
+          <div class="col-sm-6">
+            {{ render_field(form.team_member_college2, class_="form-control",
+            placeholder="College") }}
+            <br />
+          </div>
+          <div class="member-wrap2" style="margin-top: 20px;"></div>
+        </div>
+        <button class="btn btn-warning add_more_members2">
+          Add More
+        </button>
+      </div>
+      <div class="col-sm-4">
+        <p style="font-size: 20px;"><b>Third Prize Winners</b></p>
+        <div class="row">
+          <div class="col-sm-12">
+            {{ render_field(form.team_name3, class_="form-control",
+            placeholder="Team Name") }}
+            <br />
+          </div>
+          <div class="col-sm-6">
+            {{ render_field(form.team_member_name3, class_="form-control",
+            placeholder="Team Member") }}
+          </div>
+          <div class="col-sm-6">
+            {{ render_field(form.team_member_college3, class_="form-control",
+            placeholder="College") }}
+            <br />
+          </div>
+          <div class="member-wrap3" style="margin-top: 20px;"></div>
+        </div>
+        <button class="btn btn-warning add_more_members3">
+          Add More
+        </button>
       </div>
     </div>
     <br />
-    <div class="col-sm-6">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <br /><br />
+        <h2><u>Event Status</u></h2>
+      </div>
+    </div>
+    <!-- <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.additional_jury_name, class_="form-control") }}
+      </div>
+    </div> -->
+    <br />
+    <div class="col-sm-3">
       <div class="form-group">
         <p><b>Status</b></p>
         <div class="col-sm-8">
@@ -538,22 +641,69 @@
     </div>
     <div class="col-sm-3">
       <div class="form-group">
-        {{ render_field(form.winning_team_details, class_="form-control") }}
+        <p><b>Event Posted on Portal?</b></p>
+        <div class="col-sm-8">
+          {{ form.portal_status }}
+        </div>
       </div>
     </div>
     <div class="col-sm-4">
       <div class="form-group">
-        {{ render_field(form.runnerup_team_details, class_="form-control") }}
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="form-group">
-        {{ render_field(form.box_location_winning_profile,
-        class_="form-control") }}
+        <p><b>Post Event Socialising?</b></p>
+        <div class="col-sm-10">
+          <div id="UrlField1" style="display: block;">
+            <div style="float: left;">
+              <!-- <input
+                type="text"
+                class="form-control"
+                placeholder="Social media post URL "
+              /> -->
+              {{ render_field(form.url_list, class_="form-control",
+              placeholder="Social media post URL") }}
+              <br />
+            </div>
+            <div style="float: right;">
+              <br />
+              <button class="btn btn-warning add_more_url btn-sm">
+                Add More
+              </button>
+            </div>
+            <br />
+            <div class="url-wrap" style="margin-top: 20px;"></div>
+          </div>
+          <br /><br />
+          {{ form.post_event_social(onchange="toggleUrlField('UrlField1')") }}
+        </div>
       </div>
     </div>
     <div class="col-sm-12">
-      <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+      <br /><br />
+      <div class="form-group">
+        <h2><u>Testimonials</u></h2>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback1, class_="form-control") }}
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback2, class_="form-control") }}
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        {{ render_field(form.feedback3, class_="form-control") }}
+      </div>
+    </div>
+
+    <div class="col-sm-12">
+      <br /><br />
+      <center>
+        <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+      </center>
+      <br /><br />
     </div>
   </form>
 </div>

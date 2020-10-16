@@ -306,11 +306,23 @@
         var add_jury = $(".add_more_jury");
         var add_speaker = $(".add_speaker_button");
         var add_url = $(".add_more_url");
+        var add_member1 = $(".add_more_members1");
+        var add_member2 = $(".add_more_members2");
+        var add_member3 = $(".add_more_members3");
         var jury_wrapper = $(".jury-wrap");
         var speaker_wrapper = $(".speaker-wrap");
         var url_wrapper = $(".url-wrap");
+        var member1_wrapper = $(".member-wrap1");
+        var member2_wrapper = $(".member-wrap2");
+        var member3_wrapper = $(".member-wrap3");
 
         var x = 1; //initlal text box count
+        var url_counter = 1; //initial text box count for URL Fields under "Post Event Socialising?"
+
+        // Counters for the 3 winning teams
+        var team1_counter = 1;
+        var team2_counter = 1;
+        var team3_counter = 1;
         $(add_button).click(function (e) {
           //on add input button click
           e.preventDefault();
@@ -329,7 +341,7 @@
             //max input box allowed
             x++; //text box increment
             $(jury_wrapper).append(
-              '<div><input class="form-control" id="jury_name" name="jury_name" required type="text" value=""><select class="form-control" id="bu" name="bu"><option value="ISL">ISL</option><option value="IRL">IRL</option><option value="GBS">GBS</option><option value="GTS">GTS</option></select><a href="#" class="remove_field">Remove</a></div>'
+              '<div><br /><input class="form-control" id="jury_name" name="jury_name" required type="text" value=""><br /><select class="form-control" id="bu" name="bu"><option value="ISL">ISL</option><option value="IRL">IRL</option><option value="GBS">GBS</option><option value="GTS">GTS</option></select><a href="#" class="remove_field">Remove</a></div>'
             ); //add input box
           }
         });
@@ -347,11 +359,44 @@
         $(add_url).click(function (e) {
           //on add input button click
           e.preventDefault();
-          if (x < max_fields) {
+          if (url_counter < max_fields) {
             //max input box allowed
-            x++; //text box increment
+            url_counter++; //text box increment
             $(url_wrapper).append(
               '<div><br /><input type="text" class="form-control" id="url_list" name="url_list" required type="text" value="" placeholder="Social media post URL"><a href="#" class="remove_field">Remove</a></div>'
+            ); //add input box
+          }
+        });
+        $(add_member1).click(function (e) {
+          //on add input button click
+          e.preventDefault();
+          if (team1_counter < 4) {
+            //max input box allowed
+            team1_counter++; //text box increment
+            $(member1_wrapper).append(
+              '<div><div class="col-sm-6"><input class="form-control" id="team_member_name1" name="team_member_name1" required type="text" value="" placeholder="Member Name"><a href="#" class="remove_field">Remove</a></div><div class="col-sm-6"><input class="form-control" id="team_member_college1" name="team_member_college1" required type="text" value="" placeholder="College"></div><div class="col-sm-12"><br /></div></div>'
+            ); //add input box
+          }
+        });
+        $(add_member2).click(function (e) {
+          //on add input button click
+          e.preventDefault();
+          if (team2_counter < 4) {
+            //max input box allowed
+            team2_counter++; //text box increment
+            $(member2_wrapper).append(
+              '<div><div class="col-sm-6"><input class="form-control" id="team_member_name2" name="team_member_name2" required type="text" value="" placeholder="Member Name"><a href="#" class="remove_field">Remove</a></div><div class="col-sm-6"><input class="form-control" id="team_member_college2" name="team_member_college2" required type="text" value="" placeholder="College"></div><div class="col-sm-12"><br /></div></div>'
+            ); //add input box
+          }
+        });
+        $(add_member3).click(function (e) {
+          //on add input button click
+          e.preventDefault();
+          if (team3_counter < 4) {
+            //max input box allowed
+            team3_counter++; //text box increment
+            $(member3_wrapper).append(
+              '<div><div class="col-sm-6"><input class="form-control" id="team_member_name3" name="team_member_name3" required type="text" value="" placeholder="Member Name"><a href="#" class="remove_field">Remove</a></div><div class="col-sm-6"><input class="form-control" id="team_member_college3" name="team_member_college3" required type="text" value="" placeholder="College"></div><div class="col-sm-12"><br /></div></div>'
             ); //add input box
           }
         });
@@ -378,6 +423,27 @@
           e.preventDefault();
           $(this).parent("div").remove();
           x--;
+        });
+        $(member1_wrapper).on("click", ".remove_field", function (e) {
+          //user click on remove text
+          e.preventDefault();
+          console.log(this);
+          $(this).parent("div").parent("div").remove();
+          team1_counter--;
+        });
+        $(member2_wrapper).on("click", ".remove_field", function (e) {
+          //user click on remove text
+          e.preventDefault();
+          console.log(this);
+          $(this).parent("div").parent("div").remove();
+          team2_counter--;
+        });
+        $(member3_wrapper).on("click", ".remove_field", function (e) {
+          //user click on remove text
+          e.preventDefault();
+          console.log(this);
+          $(this).parent("div").parent("div").remove();
+          team3_counter--;
         });
       });
     </script>
