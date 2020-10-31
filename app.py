@@ -2,6 +2,7 @@ from flask import Flask, render_template, flash, redirect, url_for, session, req
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators, SelectField,  RadioField, IntegerField, BooleanField
 from wtforms.fields.html5 import DateField
 import couchdb
+import xlsxwriter
 from ldap3 import *
 from passlib.hash import sha256_crypt
 from functools import wraps
@@ -385,14 +386,14 @@ class EventForm(Form):
     team_member_college1 = StringField('College', [validators.Length(min=1), validators.DataRequired()])
 
     # Second Prize Winners
-    team_name2 = StringField('Team Name', [validators.Length(min=1), validators.DataRequired()])
-    team_member_name2 = StringField('Member Name', [validators.Length(min=1), validators.DataRequired()])
-    team_member_college2 = StringField('College', [validators.Length(min=1), validators.DataRequired()])
+    team_name2 = StringField('Team Name', [validators.Length(min=1)])
+    team_member_name2 = StringField('Member Name', [validators.Length(min=1)])
+    team_member_college2 = StringField('College', [validators.Length(min=1)])
 
     # Third Prize Winners
     team_name3 = StringField('Team Name', [validators.Length(min=1), validators.DataRequired()])
-    team_member_name3 = StringField('Member Name', [validators.Length(min=1), validators.DataRequired()])
-    team_member_college3 = StringField('College', [validators.Length(min=1), validators.DataRequired()])
+    team_member_name3 = StringField('Member Name', [validators.Length(min=1)])
+    team_member_college3 = StringField('College', [validators.Length(min=1)])
     #----------END---------
 
     college = SelectField('College',[validators.DataRequired()], choices=[])
@@ -810,22 +811,39 @@ def edit_event(id):
         form.startdate.data = datetime.datetime.strptime(db[id]['startdate'].replace('-', ''),"%Y%m%d")
         form.enddate.data = datetime.datetime.strptime(db[id]['enddate'].replace('-', ''),"%Y%m%d")
         form.finaledate.data = datetime.datetime.strptime(db[id]['finaledate'].replace('-', ''),"%Y%m%d")
-        form.technology.data = db[id]['technology']
-        form.jury_name.data = db[id]['jury']
-        form.additional_jury_name.data = db[id]['additional_jury']
+        form.theme.data = db[id]['theme']
+        # form.jury_name.data = db[id]['jury']
+        # form.additional_jury_name.data = db[id]['additional_jury']
+        list_ibm_jury = db[id]['jury'] 
+        
+        # Fetch name and BU of jury
+        # list_ibm_jury stores jury-information in the format: [(name, BU), (name, BU) ...]
+        
+        form.team_name1.data = db[id]['team_name1']
+        # list_team1 = db[id]['list_team1']
+        form.team_name2.data = db[id]['team_name2']
+        # list_team2 = db[id]['list_team2']
+        form.team_name3.data = db[id]['team_name3']
+        # list_team3 = db[id]['list_team3']
+
         form.status.data = db[id]['status']
-        form.winning_team_details.data = db[id]['winning_team_details']
-        form.runnerup_team_details.data = db[id]['runnerup_team_details']
+        form.portal_status.data = db[id]['portal_status']
+        # form.url_list.data = db[id]['url_list']
+        # form.winning_team_details.data = db[id]['winning_team_details']
+        # form.runnerup_team_details.data = db[id]['runnerup_team_details']
         form.box_location_winning_profile.data = db[id]['winning_team_profiles']
+        form.feedback1.data = db[id]['feedback1']
+        form.feedback2.data = db[id]['feedback2']
+        form.feedback3.data = db[id]['feedback3']
         form.type_of_event.data = 'Hackathon'
         if request.method == 'POST':
             doc = db[id]
             doc['Hackathon_name'] = request.form['hackathon_name']
             doc['college'] = request.form['college']
             doc['main_event'] = request.form['list_of_events']
-            doc['no_of_participants'] = request.form['no_of_participants']
             if form.validate_on_submit() == True:
                 print("I am in")
+                doc['no_of_participants'] = request.form['no_of_participants']
                 doc['no_of_registrations'] = request.form['no_of_registrations']
                 doc['no_of_abstracts'] = request.form['no_of_abstracts']
                 doc['no_of_finalist'] = request.form['no_of_finalist']
@@ -833,11 +851,32 @@ def edit_event(id):
                 doc['enddate'] = request.form['enddate']
                 doc['finaledate'] = request.form['finaledate']
                 doc['status'] = request.form['status']
-                doc['technology'] = request.form['technology']
-                doc['jury'] = request.form['jury_name']
-                doc['additional_jury'] = request.form['additional_jury_name']
-                doc['winning_team_details'] = request.form['winning_team_details']
-                doc['runnerup_team_details'] = request.form['runnerup_team_details']
+                post_event_social = form.post_event_social.data
+                if (post_event_social == 'Yes'):
+                    doc['url_list'] = request.form.getlist('url_list')
+                else:
+                    doc['url_list'] = 'None'
+                
+                doc['theme'] = request.form['theme']
+                # doc['jury'] = request.form['jury_name']
+                # doc['additional_jury'] = request.form['additional_jury_name']
+                # doc['winning_team_details'] = request.form['winning_team_details']
+                # doc['runnerup_team_details'] = request.form['runnerup_team_details']
+                doc['team_name1'] = form.team_name1.data
+                team_member_name1 = request.form.getlist('team_member_name1')
+                team_member_college1 = request.form.getlist('team_member_college1')
+                doc['list_team1'] = [x for x in zip(team_member_name1,team_member_college1)]
+                doc['team_name2'] = form.team_name2.data
+                team_member_name2 = request.form.getlist('team_member_name2')
+                team_member_college2 = request.form.getlist('team_member_college2')
+                doc['list_team2'] = [x for x in zip(team_member_name2,team_member_college2)]
+                doc['team_name3'] = form.team_name3.data
+                team_member_name3 = request.form.getlist('team_member_name3')
+                team_member_college3 = request.form.getlist('team_member_college3')
+                doc['list_team3'] = [x for x in zip(team_member_name3,team_member_college3)]
+                jury = request.form.getlist('jury_name')
+                bu = request.form.getlist('bu')
+                doc['jury'] = [x for x in zip(jury,bu)]
                 doc['winning_team_profiles'] = request.form['box_location_winning_profile']
                 db.save(doc)
                 print(doc)
@@ -959,7 +998,7 @@ def edit_event(id):
             return redirect(url_for('dashboard'))
 
 
-    return render_template('edit_event.html', form=form)
+    return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=db[id]['list_team1'], list_team2=db[id]['list_team2'], list_team3=db[id]['list_team3'], jury=db[id]['jury'])
 # first get doc by id, save to formal parameter, delete doc with id,, store new doc in db
 # import couchdb
 # couch = couchdb.Server()
@@ -1064,9 +1103,9 @@ def downloadexcel():
     m_techSession = {}
     m_hackathon = {}
     header_event = ['event_name', 'college', 'no_of_participants', 'enddate', 'startdate', 'status', 'sponsorship_amount']
-    header_techSession = ['main_event','event_name','college','no_of_participants','status','startdate','enddate','technology','bu','ibm_sme_name','box_location_atten','box_location_feed']
+    header_techSession = ['main_event','event_name','college','no_of_participants','status','startdate','enddate','theme','bu','ibm_sme_name','box_location_atten','box_location_feed']
     header_hackathon = ['main_event','Hackathon_name','college','no_of_participants','no_of_registrations','no_of_abstracts','no_of_finalist'
-                        ,'startdate','enddate', 'finaledate', 'technology','jury','status','additional_jury','winning_team_details', 'runnerup_team_details','winning_team_profiles']
+                        ,'startdate','enddate', 'finaledate', 'theme','jury','status','team_name1', 'team_name2','winning_team_profiles']
     header_sur = ['sur_topic_name', 'professor_Name','Technology', 'proposal_receipt_date','proposal_submission_date','project_startdate','project_enddate',
      'proposal_status', 'invoice_receipt_date','invoice_payout_date', 'paper_publications','conference_show', 'sur_proposal_location','project_url']
 
