@@ -618,7 +618,7 @@ def sur_event():
                 conference_show = ''
             sur_proposal_location = form.sur_proposal_location.data
             project_url = form.project_url.data
-            doc = {'username': session['username'], 'sur_topic_name': sur_topic_name, 'professor_Name': prof_name,'professor_college_Name': prof_college_name,
+            doc = { 'sur_topic_name': sur_topic_name, 'professor_Name': prof_name,'professor_college_Name': prof_college_name,
                    'Technology': technology,'Grant_request':sur_grant_req, 'proposal_receipt_date': proposal_receipt_date, 'proposal_submission_date': proposal_submission_date,
                    'project_startdate':project_startdate,'project_enddate' : project_enddate,
                    'proposal_status': proposal_status, 'invoice_receipt_date': invoice_receipt_date, 'invoice_payout_date':invoice_payout_date, 'paper_publications': paper_publications,
@@ -757,61 +757,61 @@ def edit_event(id):
     form = EventForm(request.form)
     print(db[id]['type'])
     if db[id]['type'] == 'SUR':
-    form.sur_topic_name.data = db[id]['sur_topic_name']
-    form.prof_name.data = db[id]['professor_Name']
-    form.prof_college_name.data = db[id]['professor_college_Name']
-    form.technology.data =  db[id]['Technology']
-    form.sur_grant_req.data=db[id]['Grant_request']
-    form.proposal_receipt_date.data = datetime.datetime.strptime(db[id]['proposal_receipt_date'].replace('-', ''), "%Y%m%d")
-    print(form.proposal_receipt_date.data)
-    form.proposal_submission_date.data = datetime.datetime.strptime(db[id]['proposal_submission_date'].replace('-', ''),
-                                                                 "%Y%m%d")
-    form.project_startdate.data = datetime.datetime.strptime(db[id]['project_startdate'].replace('-', ''),
-                                                                 "%Y%m%d")
-    form.project_enddate.data = datetime.datetime.strptime(db[id]['project_enddate'].replace('-', ''),"%Y%m%d")
+        form.sur_topic_name.data = db[id]['sur_topic_name']
+        form.prof_name.data = db[id]['professor_Name']
+        form.prof_college_name.data = db[id]['professor_college_Name']
+        form.technology.data =  db[id]['Technology']
+        form.sur_grant_req.data=db[id]['Grant_request']
+        form.proposal_receipt_date.data = datetime.datetime.strptime(db[id]['proposal_receipt_date'].replace('-', ''), "%Y%m%d")
+        print(form.proposal_receipt_date.data)
+        form.proposal_submission_date.data = datetime.datetime.strptime(db[id]['proposal_submission_date'].replace('-', ''),
+                                                                    "%Y%m%d")
+        form.project_startdate.data = datetime.datetime.strptime(db[id]['project_startdate'].replace('-', ''),
+                                                                    "%Y%m%d")
+        form.project_enddate.data = datetime.datetime.strptime(db[id]['project_enddate'].replace('-', ''),"%Y%m%d")
 
-    if db[id]['invoice_receipt_date'] != '':
-        form.invoice_receipt_date.data = datetime.datetime.strptime(db[id]['invoice_receipt_date'].replace('-', ''), "%Y%m%d")
-        form.invoice_payout_date.data = datetime.datetime.strptime(db[id]['invoice_payout_date'].replace('-', ''), "%Y%m%d")
-    form.paper_publications.data = db[id]['paper_publications']
-    form.conference_showcase.data = db[id]['conference_show']
-    form.sur_proposal_location.data = db[id]['sur_proposal_location']
-    form.project_url.data = db[id]['project_url']
-    form.type_of_event.data = 'SUR'
-    if request.method == 'POST':
-        doc = db[id]
-        doc['sur_topic_name'] = request.form['sur_topic_name']
-        doc['professor_Name'] = request.form['prof_name']
-        doc['professor_college_Name'] = request.form['prof_college_name']
-        doc['Technology'] = request.form['technology']
-        doc['Grant_request']=request.form['sur_grant_req']
-        if form.validate_on_submit() == True:
-            print("I am in")
-            proposal_status = request.form['status']
-            print(proposal_status)
-            if proposal_status == 'Approved':
-                doc['invoice_receipt_date'] = request.form['invoice_receipt_date']
-                doc['invoice_payout_date'] = request.form['invoice_payout_date']
-                doc['paper_publications'] = request.form['paper_publications']
-                doc['conference_show'] = request.form['conference_showcase']
-            else:
-                doc['invoice_receipt_date'] = ''
-                doc['invoice_payout_date'] = ''
-                doc['paper_publications'] = ''
-                doc['conference_show'] = ''
-            doc['proposal_receipt_date'] = request.form['proposal_receipt_date']
-            doc['proposal_submission_date'] = request.form['proposal_submission_date']
-            doc['project_startdate'] = request.form['project_startdate']
-            doc['project_enddate'] = request.form['project_enddate']
-            doc['proposal_status'] = request.form['status']
+        if db[id]['invoice_receipt_date'] != '':
+            form.invoice_receipt_date.data = datetime.datetime.strptime(db[id]['invoice_receipt_date'].replace('-', ''), "%Y%m%d")
+            form.invoice_payout_date.data = datetime.datetime.strptime(db[id]['invoice_payout_date'].replace('-', ''), "%Y%m%d")
+        form.paper_publications.data = db[id]['paper_publications']
+        form.conference_showcase.data = db[id]['conference_show']
+        form.sur_proposal_location.data = db[id]['sur_proposal_location']
+        form.project_url.data = db[id]['project_url']
+        form.type_of_event.data = 'SUR'
+        if request.method == 'POST':
+            doc = db[id]
+            doc['sur_topic_name'] = request.form['sur_topic_name']
+            doc['professor_Name'] = request.form['prof_name']
+            doc['professor_college_Name'] = request.form['prof_college_name']
+            doc['Technology'] = request.form['technology']
+            doc['Grant_request']=request.form['sur_grant_req']
+            if form.validate_on_submit() == True:
+                print("I am in")
+                proposal_status = request.form['status']
+                print(proposal_status)
+                if proposal_status == 'Approved':
+                    doc['invoice_receipt_date'] = request.form['invoice_receipt_date']
+                    doc['invoice_payout_date'] = request.form['invoice_payout_date']
+                    doc['paper_publications'] = request.form['paper_publications']
+                    doc['conference_show'] = request.form['conference_showcase']
+                else:
+                    doc['invoice_receipt_date'] = ''
+                    doc['invoice_payout_date'] = ''
+                    doc['paper_publications'] = ''
+                    doc['conference_show'] = ''
+                doc['proposal_receipt_date'] = request.form['proposal_receipt_date']
+                doc['proposal_submission_date'] = request.form['proposal_submission_date']
+                doc['project_startdate'] = request.form['project_startdate']
+                doc['project_enddate'] = request.form['project_enddate']
+                doc['proposal_status'] = request.form['status']
 
-            doc['sur_proposal_location'] = request.form['sur_proposal_location']
-            doc['project_url'] = request.form['project_url']
-            db.save(doc)
-            print(doc)
-            flash('Event Updated', 'info')
+                doc['sur_proposal_location'] = request.form['sur_proposal_location']
+                doc['project_url'] = request.form['project_url']
+                db.save(doc)
+                print(doc)
+                flash('Event Updated', 'info')
 
-            return redirect(url_for('dashboard'))
+                return redirect(url_for('dashboard'))
 
 
     elif db[id]['type'] == 'Hackathon':
@@ -915,7 +915,8 @@ def edit_event(id):
         # form.technology.data = db[id]['technology']
         form.theme.data = db[id]['theme']
         form.topic.data = db[id]['topic']
-        form.speaker_name.data = db[id]['speaker_name']
+        # form.speaker_name.data = db[id]['speaker_name']
+        speaker_list = db[id]['speaker_name']
         form.status.data = db[id]['status']
         form.portal_status.data = db[id]['portal_status']
         form.url_list.data = db[id]['url_list']
@@ -939,10 +940,14 @@ def edit_event(id):
                 doc['enddate'] = request.form['enddate']
                 doc['theme'] = request.form['theme']
                 doc['topic'] = request.form['topic']
-                doc['speaker_name'] = request.form['speaker_name']
+                doc['speaker_name'] = request.form.getlist('speaker_name')
                 doc['status'] = request.form['status']
                 doc['portal_status'] = request.form['portal_status']
-                doc['url_list'] = request.form['url_list']
+                post_event_social = form.post_event_social.data
+                if (post_event_social == 'Yes'):
+                    doc['url_list'] = request.form.getlist('url_list')
+                else:
+                    doc['url_list'] = 'None'
                 doc['ibm_sme_name'] = request.form['ibm_sme_name']
                 # doc['technology'] = request.form['technology']
                 doc['bu'] = request.form['bu']
@@ -1006,6 +1011,11 @@ def edit_event(id):
             doc['status'] = status
             doc['portal_status'] = portal_status
             # doc['url_list'] = url_list
+            post_event_social = form.post_event_social.data
+            if (post_event_social == 'Yes'):
+                doc['url_list'] = request.form.getlist('url_list')
+            else:
+                doc['url_list'] = 'None'
             
 
             db.save(doc)
@@ -1013,8 +1023,12 @@ def edit_event(id):
 
             return redirect(url_for('dashboard'))
 
-
-    return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=db[id]['list_team1'], list_team2=db[id]['list_team2'], list_team3=db[id]['list_team3'], jury=db[id]['jury'])
+    if (db[id]['type'] == 'Hackathon'):
+        return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=db[id]['list_team1'], list_team2=db[id]['list_team2'], list_team3=db[id]['list_team3'], jury=db[id]['jury'], speaker_list=[None])
+    if (db[id]['type'] == 'tech Session'):
+        return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=[[None]], list_team2=[[None]], list_team3=[[None]], jury=[[None]], speaker_list=db[id]['speaker_name'])
+    else:
+        return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=[[None]], list_team2=[[None]], list_team3=[[None]], jury=[[None]], speaker_list=[None])
 # first get doc by id, save to formal parameter, delete doc with id,, store new doc in db
 # import couchdb
 # couch = couchdb.Server()
