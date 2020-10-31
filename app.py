@@ -427,9 +427,13 @@ class EventForm(Form):
     theme  = SelectField('Theme',[validators.DataRequired()], choices=[('AI', 'AI'), ('Blockchain', 'Blockchain'), ('Cloud', 'Cloud'), ('Security', 'Security'), ('Project Management', 'Project Management'), ('Others', 'Others')])
     topic = StringField('Topic', [validators.Length(min=3), validators.DataRequired()])
     name_of_participants = StringField('Name of Participants. Separate using ;', [validators.Length(min=3), validators.DataRequired()])
+    
+    # ---------SUR---------
     sur_topic_name = StringField('SUR Topic Name', [validators.Length(min=3), validators.DataRequired()])
-    prof_name = StringField('Professor Name', [validators.Length(min=3), validators.DataRequired()])
+    prof_name = StringField('Professor Name', [validators.Length(min=3), validators.DataRequired()], render_kw={"placeholder": "Name"})
+    prof_college_name = StringField('College', [validators.Length(min=3), validators.DataRequired()], render_kw={"placeholder": "College"})
     technology = StringField('Technology', [validators.Length(min=3), validators.DataRequired()])
+    sur_grant_req = StringField('SUR Grant Request', [validators.Length(min=3), validators.DataRequired()],render_kw={"placeholder": "INR"})
     proposal_receipt_date = DateField('Proposal Receipt date',default = datetime.date.today, format='%Y-%m-%d')
     proposal_submission_date = DateField('Proposal Submission date',default = datetime.date.today, format='%Y-%m-%d')
     proposal_status = RadioField('Proposal Status', [validators.DataRequired()], choices=[('Approved', 'Approved'), ('Rejected', 'Rejected')],
@@ -438,9 +442,12 @@ class EventForm(Form):
     invoice_payout_date = DateField('Invoice payout date', default = datetime.date.today, format='%Y-%m-%d')
     paper_publications = StringField('Paper publications', [validators.Length(min=3)])
     type_of_event = StringField('Event type')
-    conference_showcase = StringField('Conference showcase', [validators.Length(min=3)])
+    conference_showcase = StringField('Conference showcase', [validators.Length(min=3)],render_kw={"placeholder":"Yes/No"})
+    conference_url = StringField('URL', [validators.Length(min=3)], render_kw={"placeholder": "URL"})
     sur_proposal_location = StringField('SUR Proposal Location ', [validators.Length(min=3), validators.DataRequired()])
     project_url = StringField('Project URL', [validators.Length(min=3), validators.DataRequired()])
+   #-------SUR END------     
+    
     event_types = SelectField(
         'Event Type',
         choices=[('event', 'Technical Fest'), ('tech Session', 'Tech Session'), ('Hackathon', 'Hackathon'),('SUR', 'SUR')])
@@ -579,17 +586,19 @@ def sme_details():
 
     return render_template('sme_details.html', form=form)
 
-
 @app.route('/sur_event', methods=['GET', 'POST'])
-@is_logged_in
+# @is_logged_in
 def sur_event():
     form = EventForm(request.form)
     if request.method == 'POST':
         sur_topic_name = form.sur_topic_name.data
         prof_name = request.form.getlist('prof_name')
+        prof_college_name = request.form.getlist('prof_college_name') #changesssssss
         print(prof_name)
+        print(prof_college_name)
         technology = form.technology.data
-        print(technology)
+        sur_grant_req=form.sur_grant_req.data
+        print(sur_grant_req)
         if form.validate_on_submit_sur()==True:
             proposal_receipt_date = str(form.proposal_receipt_date.data)
             proposal_submission_date = str(form.proposal_submission_date.data)
@@ -609,8 +618,8 @@ def sur_event():
                 conference_show = ''
             sur_proposal_location = form.sur_proposal_location.data
             project_url = form.project_url.data
-            doc = {'username': session['username'], 'sur_topic_name': sur_topic_name, 'professor_Name': prof_name,
-                   'Technology': technology, 'proposal_receipt_date': proposal_receipt_date, 'proposal_submission_date': proposal_submission_date,
+            doc = {'username': session['username'], 'sur_topic_name': sur_topic_name, 'professor_Name': prof_name,'professor_college_Name': prof_college_name,
+                   'Technology': technology,'Grant_request':sur_grant_req, 'proposal_receipt_date': proposal_receipt_date, 'proposal_submission_date': proposal_submission_date,
                    'project_startdate':project_startdate,'project_enddate' : project_enddate,
                    'proposal_status': proposal_status, 'invoice_receipt_date': invoice_receipt_date, 'invoice_payout_date':invoice_payout_date, 'paper_publications': paper_publications,
                    'conference_show': conference_show,'sur_proposal_location':sur_proposal_location,
@@ -624,6 +633,9 @@ def sur_event():
 
 
     return render_template('add_event.html', form=form)
+
+
+
 
 
 @app.route('/tech_session', methods=['GET', 'POST'])
@@ -745,57 +757,61 @@ def edit_event(id):
     form = EventForm(request.form)
     print(db[id]['type'])
     if db[id]['type'] == 'SUR':
-        form.sur_topic_name.data = db[id]['sur_topic_name']
-        form.prof_name.data = db[id]['professor_Name']
-        form.technology.data =  db[id]['Technology']
-        form.proposal_receipt_date.data = datetime.datetime.strptime(db[id]['proposal_receipt_date'].replace('-', ''), "%Y%m%d")
-        print(form.proposal_receipt_date.data)
-        form.proposal_submission_date.data = datetime.datetime.strptime(db[id]['proposal_submission_date'].replace('-', ''),
-                                                                     "%Y%m%d")
-        form.project_startdate.data = datetime.datetime.strptime(db[id]['project_startdate'].replace('-', ''),
-                                                                     "%Y%m%d")
-        form.project_enddate.data = datetime.datetime.strptime(db[id]['project_enddate'].replace('-', ''),"%Y%m%d")
+    form.sur_topic_name.data = db[id]['sur_topic_name']
+    form.prof_name.data = db[id]['professor_Name']
+    form.prof_college_name.data = db[id]['professor_college_Name']
+    form.technology.data =  db[id]['Technology']
+    form.sur_grant_req.data=db[id]['Grant_request']
+    form.proposal_receipt_date.data = datetime.datetime.strptime(db[id]['proposal_receipt_date'].replace('-', ''), "%Y%m%d")
+    print(form.proposal_receipt_date.data)
+    form.proposal_submission_date.data = datetime.datetime.strptime(db[id]['proposal_submission_date'].replace('-', ''),
+                                                                 "%Y%m%d")
+    form.project_startdate.data = datetime.datetime.strptime(db[id]['project_startdate'].replace('-', ''),
+                                                                 "%Y%m%d")
+    form.project_enddate.data = datetime.datetime.strptime(db[id]['project_enddate'].replace('-', ''),"%Y%m%d")
 
-        if db[id]['invoice_receipt_date'] != '':
-            form.invoice_receipt_date.data = datetime.datetime.strptime(db[id]['invoice_receipt_date'].replace('-', ''), "%Y%m%d")
-            form.invoice_payout_date.data = datetime.datetime.strptime(db[id]['invoice_payout_date'].replace('-', ''), "%Y%m%d")
-        form.paper_publications.data = db[id]['paper_publications']
-        form.conference_showcase.data = db[id]['conference_show']
-        form.sur_proposal_location.data = db[id]['sur_proposal_location']
-        form.project_url.data = db[id]['project_url']
-        form.type_of_event.data = 'SUR'
-        if request.method == 'POST':
-            doc = db[id]
-            doc['sur_topic_name'] = request.form['sur_topic_name']
-            doc['professor_Name'] = request.form['prof_name']
-            doc['technology'] = request.form['technology']
-            if form.validate_on_submit() == True:
-                print("I am in")
-                proposal_status = request.form['status']
-                print(proposal_status)
-                if proposal_status == 'Approved':
-                    doc['invoice_receipt_date'] = request.form['invoice_receipt_date']
-                    doc['invoice_payout_date'] = request.form['invoice_payout_date']
-                    doc['paper_publications'] = request.form['paper_publications']
-                    doc['conference_show'] = request.form['conference_showcase']
-                else:
-                    doc['invoice_receipt_date'] = ''
-                    doc['invoice_payout_date'] = ''
-                    doc['paper_publications'] = ''
-                    doc['conference_show'] = ''
-                doc['proposal_receipt_date'] = request.form['proposal_receipt_date']
-                doc['proposal_submission_date'] = request.form['proposal_submission_date']
-                doc['project_startdate'] = request.form['project_startdate']
-                doc['project_enddate'] = request.form['project_enddate']
-                doc['proposal_status'] = request.form['status']
+    if db[id]['invoice_receipt_date'] != '':
+        form.invoice_receipt_date.data = datetime.datetime.strptime(db[id]['invoice_receipt_date'].replace('-', ''), "%Y%m%d")
+        form.invoice_payout_date.data = datetime.datetime.strptime(db[id]['invoice_payout_date'].replace('-', ''), "%Y%m%d")
+    form.paper_publications.data = db[id]['paper_publications']
+    form.conference_showcase.data = db[id]['conference_show']
+    form.sur_proposal_location.data = db[id]['sur_proposal_location']
+    form.project_url.data = db[id]['project_url']
+    form.type_of_event.data = 'SUR'
+    if request.method == 'POST':
+        doc = db[id]
+        doc['sur_topic_name'] = request.form['sur_topic_name']
+        doc['professor_Name'] = request.form['prof_name']
+        doc['professor_college_Name'] = request.form['prof_college_name']
+        doc['Technology'] = request.form['technology']
+        doc['Grant_request']=request.form['sur_grant_req']
+        if form.validate_on_submit() == True:
+            print("I am in")
+            proposal_status = request.form['status']
+            print(proposal_status)
+            if proposal_status == 'Approved':
+                doc['invoice_receipt_date'] = request.form['invoice_receipt_date']
+                doc['invoice_payout_date'] = request.form['invoice_payout_date']
+                doc['paper_publications'] = request.form['paper_publications']
+                doc['conference_show'] = request.form['conference_showcase']
+            else:
+                doc['invoice_receipt_date'] = ''
+                doc['invoice_payout_date'] = ''
+                doc['paper_publications'] = ''
+                doc['conference_show'] = ''
+            doc['proposal_receipt_date'] = request.form['proposal_receipt_date']
+            doc['proposal_submission_date'] = request.form['proposal_submission_date']
+            doc['project_startdate'] = request.form['project_startdate']
+            doc['project_enddate'] = request.form['project_enddate']
+            doc['proposal_status'] = request.form['status']
 
-                doc['sur_proposal_location'] = request.form['sur_proposal_location']
-                doc['project_url'] = request.form['project_url']
-                db.save(doc)
-                print(doc)
-                flash('Event Updated', 'info')
+            doc['sur_proposal_location'] = request.form['sur_proposal_location']
+            doc['project_url'] = request.form['project_url']
+            db.save(doc)
+            print(doc)
+            flash('Event Updated', 'info')
 
-                return redirect(url_for('dashboard'))
+            return redirect(url_for('dashboard'))
 
 
     elif db[id]['type'] == 'Hackathon':
