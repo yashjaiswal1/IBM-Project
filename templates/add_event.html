@@ -757,10 +757,8 @@
     <h2><u>Event Details</u></h2>
     <div class="sur_event_details">
       <div class="container">
-
         <div class="row">
           <div class="form-horizontal">
-
             <div class="col-sm-6">
               <div class="form-group">
                 <div class="col-sm-8">
@@ -785,22 +783,30 @@
                 <div class="input_fields_wrap"></div>
               </div>
             </div> -->
-            <div class="col-sm-6">
+            <!-- <div class="col-sm-6">
               <div class="col-sm-8">
                 <div class="form-group">
                   <span>
-                    {{ render_field(form.prof_name, class_="form-control") }} 
-                    {{ render_field(form.prof_college_name, class_="form-control") }}
+                    {{ render_field(form.prof_name, class_="form-control") }} {{
+                    render_field(form.prof_college_name, class_="form-control")
+                    }}
                     <button class="btn btn-warning add_field_button">
                       Add More
                     </button>
                   </span>
-                  
+
                   <div class="input_fields_wrap"></div>
                 </div>
               </div>
+            </div> -->
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-8">
+                  {{ render_field(form.sur_proposal_location,
+                  class_="form-control") }}
+                </div>
+              </div>
             </div>
-
           </div>
         </div>
 
@@ -809,7 +815,7 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <div class="col-sm-8">
-                  {{ render_field(form.sur_proposal_location, class_="form-control") }}
+                  {{ render_field(form.sur_grant_req, class_="form-control") }}
                 </div>
               </div>
             </div>
@@ -820,112 +826,200 @@
                   {{ render_field(form.technology, class_="form-control") }}
                 </div>
               </div>
-            </div>  
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-4">
+                  {{ render_field(form.project_startdate, class_="form-control")
+                  }}
+                </div>
+                <div class="col-sm-4">
+                  {{ render_field(form.project_enddate, class_="form-control")
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="row"> -->
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-4">
+                  {{ render_field(form.proposal_receipt_date,
+                  class_="form-control") }}
+                </div>
+                <div class="col-sm-5">
+                  {{ render_field(form.proposal_submission_date,
+                  class_="form-control") }}
+                </div>
+              </div>
+            </div>
 
             <div class="col-sm-6">
               <div class="form-group">
                 <div class="col-sm-8">
-                  {{ render_field(form.sur_grant_req, class_="form-control") }}
+                  {{ render_field(form.paper_publications,
+                  class_="form-control") }}
                 </div>
               </div>
             </div>
 
-           <!-- <div class="row"> -->
-            
             <div class="col-sm-6">
               <div class="form-group">
                 <div class="col-sm-4">
-                  {{ render_field(form.proposal_receipt_date, class_="form-control") }}
+                  {{ render_field(form.invoice_receipt_date,
+                  class_="form-control") }}
                 </div>
                 <div class="col-sm-5">
-                  {{ render_field(form.proposal_submission_date, class_="form-control") }}
+                  {{ render_field(form.invoice_payout_date,
+                  class_="form-control") }}
                 </div>
               </div>
             </div>
 
             <div class="col-sm-6">
               <div class="form-group">
+                <!-- <label>Proposal Status</label><br />
                 <div class="col-sm-4">
-                  {{ render_field(form.project_startdate, class_="form-control") }}
+                  <input
+                    type="radio"
+                    name="status"
+                    value="Approved"
+                    onclick="sur_approved();"
+                    checked
+                  /><b> Approved</b>
                 </div>
                 <div class="col-sm-4">
-                  {{ render_field(form.project_enddate, class_="form-control") }}
+                  <input
+                    type="radio"
+                    name="status"
+                    value="Rejected"
+                    onclick="sur_rejected();"
+                  /><b> Rejected</b>
+                </div> -->
+                <div class="col-sm-8">
+                  {{ render_field(form.project_url, class_="form-control") }}
+                  <p><b>Conference Showcase</b></p>
+                  <div id="ConferenceURL" style="display: block;">
+                    <div>
+                      <!-- <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Social media post URL "
+                      /> -->
+                      {{ render_field(form.conference_url,
+                      class_="form-control") }}
+                    </div>
+                    <br />
+                  </div>
+                  {{
+                  form.conference_showcase(onchange="toggleUrlField('ConferenceURL')")
+                  }}
                 </div>
               </div>
             </div>
+            <div class="col-sm-6">
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <span>
+                    {{ render_field(form.prof_name, class_="form-control") }}
+                    <br />
+                    {{ render_field(form.prof_college_name,
+                    class_="form-control") }}
+                    <br />
+                    <button class="btn btn-warning add_prof_button">
+                      Add More
+                    </button>
+                  </span>
 
-            <div class="col-sm-6">
-              <div class="form-group">
-                <div class="col-sm-4">
-                  {{ render_field(form.invoice_receipt_date, class_="form-control") }}
-                </div>
-                <div class="col-sm-5">
-                  {{ render_field(form.invoice_payout_date, class_="form-control") }}
+                  <div class="prof-wrap"></div>
                 </div>
               </div>
             </div>
-            
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label>Proposal Status</label><br />
-                <div class="col-sm-4">
-                <input
-                  type="radio"
-                  name="status"
-                  value="Approved"
-                  onclick="sur_approved();"
-                  checked
-                /><b> Approved</b>
-              </div>
-              <div class="col-sm-4">
-                <input
-                  type="radio"
-                  name="status"
-                  value="Rejected"
-                  onclick="sur_rejected();"
-                /><b> Rejected</b>
-              </div>
-              </div>
-            </div>
-            
           </div>
         </div>
         <div class="row">
-          <div class="form-horizontal">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <div class="col-sm-8">
-              {{ render_field(form.project_url, class_="form-control") }}
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="form-group">
-              <div class="col-sm-8">
-              {{ render_field(form.paper_publications, class_="form-control") }}
-              </div> 
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="form-group">
-              <div class="col-sm-8">
-              {{ render_field(form.conference_showcase, class_="form-control") }}
-             </div>
-            </div>
-          </div>
-
-          <div class="col-sm-6" style="display:none;">
-            <div class="form-group">
-              <div class="col-sm-8">
-              {{ render_field(form.conference_url, class_="form-control") }}
-              </div>
-            </div>
-          </div>
+          <div class="col-sm-12">
+            <br /><br />
+            <h2><u>Event Status</u></h2>
           </div>
         </div>
-           <!-- </div> -->
+        <!-- <div class="col-sm-4">
+          <div class="form-group">
+            {{ render_field(form.additional_jury_name, class_="form-control") }}
+          </div>
+        </div> -->
+        <br />
+        <div class="col-sm-3">
+          <div class="form-group">
+            <p><b>Proposal Status</b></p>
+            <div class="col-sm-8">
+              {{ form.proposal_status }}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <p><b>Event Posted on Portal?</b></p>
+            <div class="col-sm-8">
+              {{ form.portal_status }}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <p><b>Post Event Socialising?</b></p>
+            <div class="col-sm-10">
+              <div id="UrlField1" style="display: block;">
+                <div style="float: left;">
+                  <!-- <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Social media post URL "
+                  /> -->
+                  {{ render_field(form.url_list, class_="form-control",
+                  placeholder="Social media post URL") }}
+                  <br />
+                </div>
+                <div style="float: right;">
+                  <br />
+                  <button class="btn btn-warning add_more_url btn-sm">
+                    Add More
+                  </button>
+                </div>
+                <br />
+                <div class="url-wrap" style="margin-top: 20px;"></div>
+              </div>
+              <br /><br />
+              {{ form.post_event_social(onchange="toggleUrlField('UrlField1')")
+              }}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <br /><br />
+          <div class="form-group">
+            <h2><u>Testimonials</u></h2>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            {{ render_field(form.feedback1, class_="form-control") }}
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            {{ render_field(form.feedback2, class_="form-control") }}
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            {{ render_field(form.feedback3, class_="form-control") }}
+          </div>
+        </div>
+
+        <!-- </div> -->
       </div>
     </div>
 
@@ -952,19 +1046,19 @@
         
       </div>
     </div> -->
-    
+
     <!-- <div id="invoice_dates"> -->
-      <!-- <div class="col-sm-2">
+    <!-- <div class="col-sm-2">
         <div class="form-group">
           
         </div>
       </div> -->
-      <!-- <div class="col-sm-2">
+    <!-- <div class="col-sm-2">
         <div class="form-group">
           
         </div>
       </div> -->
-      
+
     <!-- </div> -->
     <!-- <div class="col-sm-6">
       <div class="form-group">

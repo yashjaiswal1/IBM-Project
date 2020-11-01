@@ -303,12 +303,14 @@
         var max_fields = 10; //maximum input boxes allowed
         var wrapper = $(".input_fields_wrap"); //Fields wrapper
         var add_button = $(".add_field_button"); //Add button ID
+        var add_prof = $(".add_prof_button");
         var add_jury = $(".add_more_jury");
         var add_speaker = $(".add_speaker_button");
         var add_url = $(".add_more_url");
         var add_member1 = $(".add_more_members1");
         var add_member2 = $(".add_more_members2");
         var add_member3 = $(".add_more_members3");
+        var prof_wrapper = $(".prof-wrap");
         var jury_wrapper = $(".jury-wrap");
         var speaker_wrapper = $(".speaker-wrap");
         var url_wrapper = $(".url-wrap");
@@ -331,6 +333,17 @@
             x++; //text box increment
             $(wrapper).append(
               '<div><input type="text" class="form-control" name="prof_name"><a href="#" class="remove_field">Remove</a></div>'
+            ); //add input box
+          }
+        });
+        $(add_prof).click(function (e) {
+          //on add input button click
+          e.preventDefault();
+          if (x < max_fields) {
+            //max input box allowed
+            x++; //text box increment
+            $(prof_wrapper).append(
+              '<div><br /><input class="form-control" id="prof_name" name="prof_name" required type="text" value="" placeholder="Professor  Name"><br /><input class="form-control" id="prof_college_name" name="prof_college_name" required type="text" value="" placeholder="Professor  College"><a href="#" class="remove_field">Remove</a></div>'
             ); //add input box
           }
         });
@@ -362,6 +375,7 @@
           if (url_counter < max_fields) {
             //max input box allowed
             url_counter++; //text box increment
+            console.log(url_counter);
             $(url_wrapper).append(
               '<div><br /><input type="text" class="form-control" id="url_list" name="url_list" required type="text" value="" placeholder="Social media post URL"><a href="#" class="remove_field">Remove</a></div>'
             ); //add input box
@@ -406,6 +420,12 @@
           $(this).parent("div").remove();
           x--;
         });
+        $(prof_wrapper).on("click", ".remove_field", function (e) {
+          //user click on remove text
+          e.preventDefault();
+          $(this).parent("div").remove();
+          x--;
+        });
         $(jury_wrapper).on("click", ".remove_field", function (e) {
           //user click on remove text
           e.preventDefault();
@@ -422,7 +442,7 @@
           //user click on remove text
           e.preventDefault();
           $(this).parent("div").remove();
-          x--;
+          url_counter--;
         });
         $(member1_wrapper).on("click", ".remove_field", function (e) {
           //user click on remove text

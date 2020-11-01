@@ -442,9 +442,9 @@ class EventForm(Form):
     invoice_payout_date = DateField('Invoice payout date', default = datetime.date.today, format='%Y-%m-%d')
     paper_publications = StringField('Paper publications', [validators.Length(min=3)])
     type_of_event = StringField('Event type')
-    conference_showcase = StringField('Conference showcase', [validators.Length(min=3)],render_kw={"placeholder":"Yes/No"})
-    conference_url = StringField('URL', [validators.Length(min=3)], render_kw={"placeholder": "URL"})
-    sur_proposal_location = StringField('SUR Proposal Location ', [validators.Length(min=3), validators.DataRequired()])
+    conference_showcase = RadioField('Conference Showcase', choices=[("Yes","Yes"), ("No","No")], default="Yes")
+    conference_url = StringField('', [validators.Length(min=3)], render_kw={"placeholder": "Conference URL"})
+    sur_proposal_location = StringField('SUR City ', [validators.Length(min=3), validators.DataRequired()])
     project_url = StringField('Project URL', [validators.Length(min=3), validators.DataRequired()])
    #-------SUR END------     
     
@@ -540,7 +540,7 @@ def add_event():
             # compute total number of participants and add them here
             doc = {'event_name': event_name, 'college': college,'theme' : theme ,
                    'no_of_participants': no_of_participants, 'enddate': enddate, 'startdate': startdate,
-                   'status': status, 'sponsorship_amount': sponsorship_amount,'status': status,
+                   'status': status, 'sponsorsship_amount': sponsorship_amount,'status': status,
                    'portal_status' : portal_status ,'post_event_social' : post_event_social,'topic':topic, 'type': 'event',
                    'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3}
             db.save(doc)
@@ -593,7 +593,8 @@ def sur_event():
     if request.method == 'POST':
         sur_topic_name = form.sur_topic_name.data
         prof_name = request.form.getlist('prof_name')
-        prof_college_name = request.form.getlist('prof_college_name') #changesssssss
+        prof_college_name = request.form.getlist('prof_college_name')
+        list_prof = [x for x in zip(prof_name,prof_college_name)]
         print(prof_name)
         print(prof_college_name)
         technology = form.technology.data
@@ -604,13 +605,17 @@ def sur_event():
             proposal_submission_date = str(form.proposal_submission_date.data)
             project_startdate = str(form.project_startdate.data)
             project_enddate = str(form.project_enddate.data)
-            proposal_status = request.form['status']
+            proposal_status = request.form['proposal_status']
             print(proposal_status)
             if proposal_status == 'Approved':
                 invoice_receipt_date = str(form.invoice_receipt_date.data)
                 invoice_payout_date = str(form.invoice_payout_date.data)
                 paper_publications = form.paper_publications.data
                 conference_show = form.conference_showcase.data
+                if(conference_show == 'Yes'):
+                    conference_url = form.conference_url.data
+                else:
+                    conference_url = ''
             else:
                 invoice_receipt_date = ''
                 invoice_payout_date = ''
@@ -618,11 +623,21 @@ def sur_event():
                 conference_show = ''
             sur_proposal_location = form.sur_proposal_location.data
             project_url = form.project_url.data
-            doc = { 'sur_topic_name': sur_topic_name, 'professor_Name': prof_name,'professor_college_Name': prof_college_name,
+            portal_status = form.portal_status.data
+            post_event_social = form.post_event_social.data
+            if (post_event_social == 'Yes'):
+                url_list = request.form.getlist('url_list')
+            else:
+                url_list = 'None'
+            feedback1 = form.feedback1.data
+            feedback2 = form.feedback2.data
+            feedback3 = form.feedback3.data
+            doc = { 'sur_topic_name': sur_topic_name, 'list_prof': list_prof,
                    'Technology': technology,'Grant_request':sur_grant_req, 'proposal_receipt_date': proposal_receipt_date, 'proposal_submission_date': proposal_submission_date,
                    'project_startdate':project_startdate,'project_enddate' : project_enddate,
-                   'proposal_status': proposal_status, 'invoice_receipt_date': invoice_receipt_date, 'invoice_payout_date':invoice_payout_date, 'paper_publications': paper_publications,
+                   'proposal_status': proposal_status, 'url_list': url_list,'portal_status':portal_status,'invoice_receipt_date': invoice_receipt_date, 'invoice_payout_date':invoice_payout_date, 'paper_publications': paper_publications,
                    'conference_show': conference_show,'sur_proposal_location':sur_proposal_location,
+                   'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3,
                    'project_url': project_url, 'type': 'SUR'}
             db.save(doc)
             flash('SUR Created', 'success')
@@ -1027,6 +1042,8 @@ def edit_event(id):
         return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=db[id]['list_team1'], list_team2=db[id]['list_team2'], list_team3=db[id]['list_team3'], jury=db[id]['jury'], speaker_list=[None])
     if (db[id]['type'] == 'tech Session'):
         return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=[[None]], list_team2=[[None]], list_team3=[[None]], jury=[[None]], speaker_list=db[id]['speaker_name'])
+    if db[id]['type'] == 'SUR':
+        return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=[[None]], list_team2=[[None]], list_team3=[[None]], jury=[[None]], speaker_list=[None])
     else:
         return render_template('edit_event.html', form=form, social_url_list=db[id]['url_list'], list_team1=[[None]], list_team2=[[None]], list_team3=[[None]], jury=[[None]], speaker_list=[None])
 # first get doc by id, save to formal parameter, delete doc with id,, store new doc in db
