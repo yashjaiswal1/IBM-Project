@@ -177,51 +177,52 @@
   </table>
 </div>
 <!-- SUR DASHBOARD -->
-    <div id="sur" class="table-popup">
+<div id="sur" class="table-popup">
   <table class="table table-striped">
     <tr>
       <th>SUR Topic Name</th>
-	  <th>Professor Name</th>
+      <th>Professor Name</th>
       <th>Technology</th>
       <th>SUR Grant Request</th>
       <th>Proposal Receipt date</th>
-	  <th>Proposal Submission date</th>
+      <th>Proposal Submission date</th>
       <th>Proposal Status</th>
-	  <th>Paper publications</th>
+      <th>Paper publications</th>
       <th></th>
-	  <th></th>
+      <th></th>
     </tr>
-    {% for event in events %}
-        {% if event.type ==  'SUR' %}
-      <tr>
-        <td>{{event.sur_topic_name}}</td>
-        <!-- <td>{{event.professor_Name}}</td> Changesssss-->  
-        <td>
-          {% for prof in event.professor_Name %}
-          <p>{{prof}}</p>
-          {% endfor %}
-        </td>
-        <!-- Changesssss end -->
-    <td>{{event.Technology}}</td>
-    <td>{{event.Grant_request}}</td>
-		<td>{{event.proposal_receipt_date}}</td>
-		<td>{{event.proposal_submission_date}}</td>
-		<td>{{event.proposal_status}}</td>
-		<td>{{event.paper_publications}}</td>
-        <td><a href="edit_event/{{event.id}}" class="btn btn-default pull-right">Edit</a></td>
-        <td>
-          <form action="{{url_for('delete_event', id=event.id)}}" method="post">
-            <input type="hidden" name="_method" value="DELETE">
-            <input type="submit" value="Delete" class="btn btn-danger">
-          </form>
-        </td>
-      </tr>
-        {% endif %}
-    {% endfor %}
+    {% for event in events %} {% if event.type == 'SUR' %}
+    <tr>
+      <td>{{event.sur_topic_name}}</td>
+      <!-- <td>{{event.professor_Name}}</td> Changesssss-->
+      <td>
+        {% for prof in event.list_prof %}
+        <p>{{prof[0]}}</p>
+        {% endfor %}
+      </td>
+      <!-- Changesssss end -->
+      <td>{{event.Technology}}</td>
+      <td>{{event.Grant_request}}</td>
+      <td>{{event.proposal_receipt_date}}</td>
+      <td>{{event.proposal_submission_date}}</td>
+      <td>{{event.proposal_status}}</td>
+      <td>{{event.paper_publications}}</td>
+      <td>
+        <a href="edit_event/{{event.id}}" class="btn btn-default pull-right"
+          >Edit</a
+        >
+      </td>
+      <td>
+        <form action="{{url_for('delete_event', id=event.id)}}" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          <input type="submit" value="Delete" class="btn btn-danger" />
+        </form>
+      </td>
+    </tr>
+    {% endif %} {% endfor %}
   </table>
-    </div>
+</div>
 <!-- SUR END -->
-
 
 <!-- <div id="sur" class="table-popup">
   <table class="table table-striped">
@@ -261,7 +262,6 @@
     {% endif %} {% endfor %}
   </table>
 </div> -->
-
 
 <form method="get" action="/add_event">
   <button class="btn btn-primary" type="submit">Add Event</button>
