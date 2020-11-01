@@ -59,6 +59,19 @@ def events_call():
     events_list = [(x, next(events_list)) for x in events_list]
     return events_list
 
+# Check if user logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session and session['logged_in'] == True:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized, Please login', 'danger')
+            return redirect(url_for('login'))
+
+    return wrap
+
+
 #test
 @app.route('/test', methods=['GET', 'POST'])
 def test():
@@ -67,6 +80,7 @@ def test():
 
 # Index
 @app.route('/')
+@is_logged_in
 def index():
     if 'logged_in' in session and session['logged_in'] == True:
         return render_template('home.html')
@@ -123,12 +137,14 @@ class RegisterForm(Form):
 
 #Admin Page
 @app.route('/admin', methods=['GET', 'POST'])
+@is_logged_in
 def admin():
     form = EventForm(request.form)
     return render_template('admin.html')
 
 #Add College
 @app.route('/add_college', methods=['GET', 'POST'])
+@is_logged_in
 def addcollege():
     form = EventForm(request.form)
     if request.method == 'POST':
@@ -152,6 +168,7 @@ def addcollege():
 
 # Edit College
 @app.route('/edit_college', methods=['GET', 'POST'])
+@is_logged_in
 def editcollege():
     college_list = []
     for i in db:
@@ -162,6 +179,7 @@ def editcollege():
 
 # Delete College
 @app.route('/delete_college/<string:id>', methods=['POST'])
+@is_logged_in
 def delete_college(id):
     doc = db[id]
     db.delete(doc)
@@ -170,6 +188,7 @@ def delete_college(id):
 
 #Edit College
 @app.route('/edit_college/<string:id>', methods=['GET', 'POST'])
+@is_logged_in
 def edit_college1(id):
     form = EventForm(request.form)
     form.college_name.data = db[id]['college_name']
@@ -210,12 +229,16 @@ def login():
 
         for i in db:
             if db[i]['type'] == 'user':
-                if db[i]['username'] == POST_USERNAME:
+                if db[i]['username'] == POST_USERNAME and db[i]['password'] == POST_PASSWORD:
                     session['logged_in'] = True
                     session['username'] = POST_USERNAME
 
                     # flash('You are now logged in', 'success')
                     return redirect(url_for('index'))
+                else:
+                    error = 'Invalid login'
+                    session['logged_in'] = False
+                    return render_template('login.html', error=error)
 
 
         server = Server('ldap://bluepages.ibm.com', get_info=ALL)
@@ -264,19 +287,6 @@ def login():
     return render_template('login.html')
 
 
-# Check if user logged in
-def is_logged_in(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            flash('Unauthorized, Please login', 'danger')
-            return redirect(url_for('login'))
-
-    return wrap
-
-
 # Logout
 @app.route('/logout')
 @is_logged_in
@@ -296,7 +306,7 @@ def datesubmit():
 
 # Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def dashboard():
     event_type_list = ['event', 'tech Session', 'Hackathon']
     form = EventForm(request.form)
@@ -502,7 +512,7 @@ class EventForm(Form):
 
 # Add Event
 @app.route('/add_event', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def add_event():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -587,7 +597,7 @@ def sme_details():
     return render_template('sme_details.html', form=form)
 
 @app.route('/sur_event', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def sur_event():
     form = EventForm(request.form)
     if request.method == 'POST':
@@ -654,7 +664,7 @@ def sur_event():
 
 
 @app.route('/tech_session', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def tech_session():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -698,7 +708,7 @@ def tech_session():
     return render_template('add_event.html', form=form)
 
 @app.route('/hackathon', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def hackathon():
     form = EventForm(request.form)
     form.college.choices = college_call()
@@ -767,7 +777,7 @@ def hackathon():
 
 # Edit Event
 @app.route('/edit_event/<string:id>', methods=['GET', 'POST'])
-# @is_logged_in
+@is_logged_in
 def edit_event(id):
     form = EventForm(request.form)
     print(db[id]['type'])
@@ -1069,7 +1079,7 @@ def edit_event(id):
 
 # Delete Event
 @app.route('/delete_event/<string:id>', methods=['POST'])
-# @is_logged_in
+@is_logged_in
 def delete_event(id):
     doc = db[id]
     db.delete(doc)
@@ -1079,6 +1089,7 @@ def delete_event(id):
 
 # Download Event
 @app.route('/downloadpdf', methods=['GET'])
+@is_logged_in
 def download():
     pdf = FPDF()
     c = {}
@@ -1122,6 +1133,7 @@ def download():
 
 
 @app.route('/downloadexcel', methods=['GET'])
+@is_logged_in
 def downloadexcel():
     events = []
     sur = []
