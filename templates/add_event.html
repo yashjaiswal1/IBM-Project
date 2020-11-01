@@ -25,8 +25,8 @@
 <br />
 <br />
 
-<!---------------------------MY FORM --------------------------------->
 <div id="myForm" class="form-popup">
+  <!-- Template for Tech Fest / Conferences -->
   <form method="POST" action="">
     <div class="event_details">
       <div class="container">
@@ -95,10 +95,6 @@
           <div class="col-sm-3">
             <div class="form-group">
               <p><b>Event Posted on Portal?</b></p>
-              <!-- <input type="radio" id="yes" value="yes" name="event_portal" />
-              <label for="yes">Yes</label><br />
-              <input type="radio" id="no" value="no" name="event_portal" />
-              <label for="no">No</label> -->
               <div class="col-sm-8">
                 {{ form.portal_status }}
               </div>
@@ -108,31 +104,9 @@
           <div class="col-sm-4">
             <div class="form-group">
               <p><b>Post event socialising?</b></p>
-              <!-- <input
-                type="radio"
-                id="yes"
-                value="yes"
-                name="post_event"
-                onclick="showlinks()"
-              />
-              <label for="yes">Yes</label><br />
-              <input
-                type="radio"
-                id="no"
-                name="post_event"
-                value="no"
-                onclick="hidelinks()"
-              />
-              <label for="no">No</label>
-              <p id="links" style="display: none;">---LINKS HERE---</p> -->
               <div class="col-sm-10">
                 <div id="UrlField1" style="display: block;">
                   <div style="float: left;">
-                    <!-- <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Social media post URL "
-                    /> -->
                     {{ render_field(form.url_list, class_="form-control",
                     placeholder="Social media post URL") }}
                     <br />
@@ -156,21 +130,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="myform_comments">
-      <div class="container">
-        <div class="row">
-          <h4><b>Comments</b></h4>
-          {{ form.comments(rows='3',columns='90') }}
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4">
-      <center>
-        <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
-      </center>
-    </div> -->
     <div class="col-sm-12">
       <br /><br />
       <div class="form-group">
@@ -204,7 +163,6 @@
   </form>
 </div>
 
-<!------------------------------------ RADIO FORM------------------------------ -->
 <br /><br />
 <div id="radio_form" class="form-popup">
   <p>
@@ -231,6 +189,7 @@
 </div>
 
 <div id="tech_session" class="form-popup">
+  <!-- Template for Tech Session -->
   <form method="POST" action="/tech_session">
     <div class="form-horizontal">
       <div class="col-sm-12">
@@ -260,17 +219,6 @@
         </div>
       </div>
       <div class="col-sm-6">
-        <!-- <div class="form-group">
-          <div class="col-sm-8">
-            {{ render_field(form.speaker_name, class_="form-control") }}
-            <span
-              ><button class="btn btn-warning add_speaker_button btn-sm">
-                Add More
-              </button></span
-            >
-            <div class="speaker-wrap"></div>
-          </div>
-        </div> -->
         <div class="col-sm-3">
           <div class="form-group" style="width: 150px;">
             {{ render_field(form.startdate, class_="form-control") }}
@@ -368,13 +316,8 @@
       <div class="form-group">
         <p><b>Post Event Socialising?</b></p>
         <div class="col-sm-10">
-          <div id="UrlField1" style="display: block;">
+          <div id="UrlField2" style="display: block;">
             <div style="float: left;">
-              <!-- <input
-                type="text"
-                class="form-control"
-                placeholder="Social media post URL "
-              /> -->
               {{ render_field(form.url_list, class_="form-control",
               placeholder="Social media post URL") }}
               <br />
@@ -389,30 +332,10 @@
             <div class="url-wrap" style="margin-top: 20px;"></div>
           </div>
           <br /><br />
-          {{ form.post_event_social(onchange="toggleUrlField('UrlField1')") }}
+          {{ form.post_event_social(onchange="toggleUrlField('UrlField2')") }}
         </div>
       </div>
     </div>
-    <!-- <div class="col-sm-2">
-      <div class="form-group">
-        {{ render_field(form.ibm_sme_name, class_="form-control") }}
-      </div>
-    </div>
-    <div class="col-sm-2">
-      <div class="form-group">
-        {{ render_field(form.bu, class_="form-control") }}
-      </div>
-    </div>
-    <div class="col-sm-3">
-      <div class="form-group">
-        {{ render_field(form.box_location_atten, class_="form-control") }}
-      </div>
-    </div>
-    <div class="col-sm-3">
-      <div class="form-group">
-        {{ render_field(form.box_location_feed, class_="form-control") }}
-      </div>
-    </div> -->
     <div class="col-sm-12">
       <br /><br />
       <div class="form-group">
@@ -446,6 +369,7 @@
 </div>
 
 <div id="HackathonForm" class="form-popup">
+  <!-- Template for Hackathon -->
   <form method="POST" action="/hackathon">
     <div class="form-horizontal">
       <h2><u>Event Details</u><br /></h2>
@@ -625,11 +549,6 @@
         <h2><u>Event Status</u></h2>
       </div>
     </div>
-    <!-- <div class="col-sm-4">
-      <div class="form-group">
-        {{ render_field(form.additional_jury_name, class_="form-control") }}
-      </div>
-    </div> -->
     <br />
     <div class="col-sm-3">
       <div class="form-group">
@@ -651,13 +570,8 @@
       <div class="form-group">
         <p><b>Post Event Socialising?</b></p>
         <div class="col-sm-10">
-          <div id="UrlField1" style="display: block;">
+          <div id="UrlField3" style="display: block;">
             <div style="float: left;">
-              <!-- <input
-                type="text"
-                class="form-control"
-                placeholder="Social media post URL "
-              /> -->
               {{ render_field(form.url_list, class_="form-control",
               placeholder="Social media post URL") }}
               <br />
@@ -672,7 +586,7 @@
             <div class="url-wrap" style="margin-top: 20px;"></div>
           </div>
           <br /><br />
-          {{ form.post_event_social(onchange="toggleUrlField('UrlField1')") }}
+          {{ form.post_event_social(onchange="toggleUrlField('UrlField3')") }}
         </div>
       </div>
     </div>
@@ -751,8 +665,8 @@
   </form>
 </div>
 
-<!--------------------------------SUR FORM---------------------------------->
 <div id="myForm3" class="form-popup">
+  <!-- Template for SUR -->
   <form method="POST" action="/sur_event">
     <h2><u>Event Details</u></h2>
     <div class="sur_event_details">
@@ -766,39 +680,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="col-sm-6">
-              <div class="form-group">             
-                <div class="col-sm-4">
-                  {{ render_field(form.prof_name, class_="form-control") }}
-                </div>
-
-                <div class="col-sm-4">
-                  {{ render_field(form.prof_college_name, class_="form-control") }}
-                </div>
-
-                  <button class="btn btn-warning add_field_button">
-                    Add More
-                  </button>
-                <div class="input_fields_wrap"></div>
-              </div>
-            </div> -->
-            <!-- <div class="col-sm-6">
-              <div class="col-sm-8">
-                <div class="form-group">
-                  <span>
-                    {{ render_field(form.prof_name, class_="form-control") }} {{
-                    render_field(form.prof_college_name, class_="form-control")
-                    }}
-                    <button class="btn btn-warning add_field_button">
-                      Add More
-                    </button>
-                  </span>
-
-                  <div class="input_fields_wrap"></div>
-                </div>
-              </div>
-            </div> -->
             <div class="col-sm-6">
               <div class="form-group">
                 <div class="col-sm-8">
@@ -841,8 +722,6 @@
               </div>
             </div>
 
-            <!-- <div class="row"> -->
-
             <div class="col-sm-6">
               <div class="form-group">
                 <div class="col-sm-4">
@@ -880,34 +759,11 @@
 
             <div class="col-sm-6">
               <div class="form-group">
-                <!-- <label>Proposal Status</label><br />
-                <div class="col-sm-4">
-                  <input
-                    type="radio"
-                    name="status"
-                    value="Approved"
-                    onclick="sur_approved();"
-                    checked
-                  /><b> Approved</b>
-                </div>
-                <div class="col-sm-4">
-                  <input
-                    type="radio"
-                    name="status"
-                    value="Rejected"
-                    onclick="sur_rejected();"
-                  /><b> Rejected</b>
-                </div> -->
                 <div class="col-sm-8">
                   {{ render_field(form.project_url, class_="form-control") }}
                   <p><b>Conference Showcase</b></p>
                   <div id="ConferenceURL" style="display: block;">
                     <div>
-                      <!-- <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Social media post URL "
-                      /> -->
                       {{ render_field(form.conference_url,
                       class_="form-control") }}
                     </div>
@@ -945,11 +801,6 @@
             <h2><u>Event Status</u></h2>
           </div>
         </div>
-        <!-- <div class="col-sm-4">
-          <div class="form-group">
-            {{ render_field(form.additional_jury_name, class_="form-control") }}
-          </div>
-        </div> -->
         <br />
         <div class="col-sm-3">
           <div class="form-group">
@@ -971,13 +822,8 @@
           <div class="form-group">
             <p><b>Post Event Socialising?</b></p>
             <div class="col-sm-10">
-              <div id="UrlField1" style="display: block;">
+              <div id="UrlField4" style="display: block;">
                 <div style="float: left;">
-                  <!-- <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Social media post URL "
-                  /> -->
                   {{ render_field(form.url_list, class_="form-control",
                   placeholder="Social media post URL") }}
                   <br />
@@ -992,7 +838,7 @@
                 <div class="url-wrap" style="margin-top: 20px;"></div>
               </div>
               <br /><br />
-              {{ form.post_event_social(onchange="toggleUrlField('UrlField1')")
+              {{ form.post_event_social(onchange="toggleUrlField('UrlField4')")
               }}
             </div>
           </div>
@@ -1018,58 +864,8 @@
             {{ render_field(form.feedback3, class_="form-control") }}
           </div>
         </div>
-
-        <!-- </div> -->
       </div>
     </div>
-
-    <!-- <div class="col-sm-2">
-      <div class="form-group">
-        
-      </div>
-    </div> -->
-    <!-- <div class="col-sm-3">
-      <div class="form-group">
-        
-      </div>
-    </div> proposal-->
-    <!-- <div class="col-sm-2">
-      <div class="form-group">
-        
-      </div>
-    </div> -->
-    <!-- <div class="col-sm-4">
-      <div class="form-group"></div>
-    </div>
-    <div class="col-sm-2">
-      <div class="form-group">
-        
-      </div>
-    </div> -->
-
-    <!-- <div id="invoice_dates"> -->
-    <!-- <div class="col-sm-2">
-        <div class="form-group">
-          
-        </div>
-      </div> -->
-    <!-- <div class="col-sm-2">
-        <div class="form-group">
-          
-        </div>
-      </div> -->
-
-    <!-- </div> -->
-    <!-- <div class="col-sm-6">
-      <div class="form-group">
-        
-      </div>
-    </div> -->
-    <!-- <div class="col-sm-6">
-      <div class="form-group">
-        
-      </div>
-    </div> -->
     <div class="col-sm-3">
       <p>
         <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
@@ -1077,11 +873,10 @@
     </div>
   </form>
 </div>
-<!-- SUR END -->
 
 <div id="test" class="form-group"></div>
 
-<!-- toggles visibility of URL Field under Post Event Socialising?  -->
+<!-- Toggles visibility of URL Field under "Post Event Socialising?"  -->
 <script>
   function toggleUrlField(elementID) {
     if (document.getElementById(elementID).style.display == "block") {
@@ -1089,15 +884,6 @@
     } else {
       document.getElementById(elementID).style.display = "block";
     }
-  }
-</script>
-
-<script>
-  function showlinks() {
-    document.getElementById("links").style.display = "block";
-  }
-  function hidelinks() {
-    document.getElementById("links").style.display = "none";
   }
 </script>
 {% endblock %}

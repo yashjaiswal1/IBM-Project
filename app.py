@@ -481,15 +481,6 @@ class EventForm(Form):
     feedback2 = TextAreaField('Feedback #2', [validators.Length(min=3)])
     feedback3 = TextAreaField('Feedback #3', [validators.Length(min=3)])
     url_list = StringField('', [validators.Length(min=3)])
-    # add url_list for form data intake
-    # implement edit functionality for /tech_session
-    # pull/fetch changes from Stuti
-    # implement everything in /hackathon
-    # implement Dashboard
-    # implement Parent-Child relationship
-    # implement Export operations for pdf, excel files etc.
-
-
 
     def validate_on_submit(self):
         if self.startdate.data > self.enddate.data:
