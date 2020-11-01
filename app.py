@@ -401,22 +401,22 @@ class EventForm(Form):
     team_member_college2 = StringField('College', [validators.Length(min=1)])
 
     # Third Prize Winners
-    team_name3 = StringField('Team Name', [validators.Length(min=1), validators.DataRequired()])
+    team_name3 = StringField('Team Name', [validators.Length(min=1)])
     team_member_name3 = StringField('Member Name', [validators.Length(min=1)])
     team_member_college3 = StringField('College', [validators.Length(min=1)])
     #----------END---------
 
     college = SelectField('College',[validators.DataRequired()], choices=[])
     college_name = StringField('College Name', [validators.Length(min=3), validators.DataRequired()])
-    college_category = SelectField('College Category', choices=[("Platinum","Platinum"), ("Gold","Gold"),  ("Silver", "Silver")])
+    college_category = SelectField('College Category', [validators.DataRequired()], choices=[("Platinum","Platinum"), ("Gold","Gold"),  ("Silver", "Silver")])
     ur_spoc = StringField('UR SPOC', [validators.Length(min=1, max=200), validators.DataRequired()])
-    city = SelectField('City', choices=[("Bangalore","Bangalore"), ("C2","C2"),("Chennai","Chennai")])
+    city = SelectField('City',[validators.DataRequired()], choices=[("Bangalore","Bangalore"), ("C2","C2"),("Chennai","Chennai")])
     region = StringField('Region', [validators.Length(min=1, max=200), validators.DataRequired()])
-    no_of_participants = IntegerField('No of participants', [validators.NumberRange(min=1), validators.DataRequired()])
-    no_of_registrations = IntegerField('No of registrations', [validators.NumberRange(min=1), validators.DataRequired()])
-    no_of_abstracts = IntegerField('No of abstracts shortlisted',[validators.NumberRange(min=1), validators.DataRequired()])
+    no_of_participants = IntegerField('No of participants', [validators.NumberRange(min=1)])
+    no_of_registrations = IntegerField('No of registrations', [validators.NumberRange(min=1)])
+    no_of_abstracts = IntegerField('No of abstracts shortlisted',[validators.NumberRange(min=1)])
     no_of_finalist = IntegerField('No of Finalist Teams',
-                                   [validators.NumberRange(min=1), validators.DataRequired()])
+                                   [validators.NumberRange(min=1)])
     finaledate = DateField('Finale Date', [validators.DataRequired()], default=datetime.date.today, format='%Y-%m-%d')
     speaker_name = StringField('Speakers', [validators.Length(min=1, max=200), validators.DataRequired()])
     jury_name = StringField('Jury', [validators.Length(min=1, max=200), validators.DataRequired()])
@@ -434,7 +434,7 @@ class EventForm(Form):
     portal_status = RadioField('Event Posted on Portal?', [validators.DataRequired()], choices= [('Yes', 'Yes'), ('No', 'No')],default='Yes')
     post_event_social = RadioField('Post Event Socialising?', [validators.DataRequired()], choices= [('Yes', 'Yes'), ('No', 'No')],default='Yes')
     list_of_events  = SelectField('List of Events', choices=[])
-    theme  = SelectField('Theme',[validators.DataRequired()], choices=[('AI', 'AI'), ('Blockchain', 'Blockchain'), ('Cloud', 'Cloud'), ('Security', 'Security'), ('Project Management', 'Project Management'), ('Others', 'Others')])
+    theme  = SelectField('Theme',[validators.DataRequired()], choices=[('Agile / DevOps', 'Agile / DevOps'),('AI / ML', 'AI / ML'), ('Analytics', 'Analytics'), ('Blockchain', 'Blockchain'), ('Cloud', 'Cloud'), ('Databases', 'Databases'), ('Design Thinking', 'Design Thinking'), ('Green Data Center', 'Green Data Center'), ('IoT', 'IoT'), ('Leadership Talk', 'Leadership Talk'), ('Mainframe','Mainframe'), ('Networking', 'Networking'), ('Patents & IP', 'Patents & IP'), ('Programming Languages', 'Programming Languages'), ('Project Management', 'Project Management'), ('Quantum Computing', 'Quantum Computing'), ('Security', 'Security'), ('Soft Skills', 'Soft Skills'), ('Smarter Cities', 'Smarter Cities'), ('SW Engg.', 'SW Engg.'), ('Watson', 'Watson'), ('Others', 'Others')])
     topic = StringField('Topic', [validators.Length(min=3), validators.DataRequired()])
     name_of_participants = StringField('Name of Participants. Separate using ;', [validators.Length(min=3), validators.DataRequired()])
     
@@ -452,7 +452,7 @@ class EventForm(Form):
     invoice_payout_date = DateField('Invoice payout date', default = datetime.date.today, format='%Y-%m-%d')
     paper_publications = StringField('Paper publications', [validators.Length(min=3)])
     type_of_event = StringField('Event type')
-    conference_showcase = RadioField('Conference Showcase', choices=[("Yes","Yes"), ("No","No")], default="Yes")
+    conference_showcase = RadioField('Conference Showcase', [validators.DataRequired()], choices=[("Yes","Yes"), ("No","No")], default="Yes")
     conference_url = StringField('', [validators.Length(min=3)], render_kw={"placeholder": "Conference URL"})
     sur_proposal_location = StringField('SUR City ', [validators.Length(min=3), validators.DataRequired()])
     project_url = StringField('Project URL', [validators.Length(min=3), validators.DataRequired()])
@@ -500,6 +500,21 @@ class EventForm(Form):
     def validate_on_submit_sur(self):
         if self.proposal_receipt_date.data > self.proposal_submission_date.data and self.invoice_receipt_date.data > self.invoice_payout_date.data:
             return False
+        if self.project_startdate.data > self.project_enddate.data:
+            error = "Project Start Date is greater than Project End Date"
+            return render_template('add_event.html', form=EventForm(request.form), error=error)
+        else:
+            return True
+    
+    def validate_on_submit_hackathon(self):
+        if (self.startdate.data > self.enddate.data):
+            return False
+        if (self.finaledate.data < self.startdate.data):
+            error = "Start date is greater than Finale date"
+            return render_template('add_event.html', form=EventForm(request.form), error=error)
+        if (int(self.no_of_finalist.data) > int(self.no_of_registrations.data)):
+            error = "Number of Finalists cannot be greater than number of Registrations"
+            return render_template('add_event.html', form=EventForm(request.form), error=error)
         else:
             return True
     ##{{% %}}##
@@ -544,6 +559,7 @@ def add_event():
             status = form.status.data
             startdate = str(form.startdate.data)
             enddate = str(form.enddate.data)
+
             sponsorship_amount = form.sponsorship_amount.data
             topic = form.topic.data
             # doc = {'username': session['username'],       commented out temporarily
@@ -653,7 +669,7 @@ def sur_event():
             flash('SUR Created', 'success')
             return redirect(url_for('dashboard'))
         else:
-            error = "Start date is greater than End date"
+            error = "Reciept date is greater than Payout / Submission date"
         return render_template('add_event.html', form=form, error=error)
 
 
@@ -678,32 +694,36 @@ def tech_session():
         topic = form.topic.data
         speaker_name = request.form.getlist('speaker_name')
         no_of_participants = str(form.no_of_participants.data)
-        startdate = str(form.startdate.data)
-        enddate = str(form.enddate.data)
-        status = form.status.data
-        portal_status = form.portal_status.data
-        post_event_social = form.post_event_social.data
-        if (post_event_social == 'Yes'):
-            url_list = request.form.getlist('url_list')
+        if form.validate_on_submit() == True:
+            startdate = str(form.startdate.data)
+            enddate = str(form.enddate.data)
+            status = form.status.data
+            portal_status = form.portal_status.data
+            post_event_social = form.post_event_social.data
+            if (post_event_social == 'Yes'):
+                url_list = request.form.getlist('url_list')
+            else:
+                url_list = 'None'
+            # technology = form.technology.data
+            bu = form.bu.data
+            ibm_sme_name = form.ibm_sme_name.data
+            box_location_atten = form.box_location_atten.data
+            box_location_feed = form.box_location_feed.data
+            feedback1 = form.feedback1.data
+            feedback2 = form.feedback2.data
+            feedback3 = form.feedback3.data
+            # box_location_winning_profile = form.box_location_winning_profile.data
+            doc = {'event_name': event_name,'main_event':list_of_events, 'college': college, 'theme': theme, 'topic': topic,
+                'speaker_name': speaker_name,'no_of_participants': no_of_participants,'startdate': startdate,'enddate': enddate,'portal_status':portal_status,
+                'status':status, 'url_list': url_list, 'bu' : bu, 'post_event_social':post_event_social, 'ibm_sme_name' : ibm_sme_name, 'box_location_atten' : box_location_atten,
+                'box_location_feed' : box_location_feed, 'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3,
+                'type': 'tech Session'}
+            db.save(doc)
+            flash('Event Created', 'success')
+            return redirect(url_for('dashboard'))
         else:
-            url_list = 'None'
-        # technology = form.technology.data
-        bu = form.bu.data
-        ibm_sme_name = form.ibm_sme_name.data
-        box_location_atten = form.box_location_atten.data
-        box_location_feed = form.box_location_feed.data
-        feedback1 = form.feedback1.data
-        feedback2 = form.feedback2.data
-        feedback3 = form.feedback3.data
-        # box_location_winning_profile = form.box_location_winning_profile.data
-        doc = {'event_name': event_name,'main_event':list_of_events, 'college': college, 'theme': theme, 'topic': topic,
-               'speaker_name': speaker_name,'no_of_participants': no_of_participants,'startdate': startdate,'enddate': enddate,'portal_status':portal_status,
-               'status':status, 'url_list': url_list, 'bu' : bu, 'post_event_social':post_event_social, 'ibm_sme_name' : ibm_sme_name, 'box_location_atten' : box_location_atten,
-               'box_location_feed' : box_location_feed, 'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3,
-               'type': 'tech Session'}
-        db.save(doc)
-        flash('Event Created', 'success')
-        return redirect(url_for('dashboard'))
+            error = "Start date is greater than End date"
+        return render_template('add_event.html', form=form, error=error)
 
     return render_template('add_event.html', form=form)
 
@@ -719,7 +739,7 @@ def hackathon():
         college = form.college.data
         list_of_events = form.list_of_events.data
         no_of_participants = str(form.no_of_participants.data)
-        if form.validate_on_submit() == True:
+        if form.validate_on_submit_hackathon() == True:
             startdate = str(form.startdate.data)
             enddate = str(form.enddate.data)
             theme = form.theme.data
@@ -815,7 +835,7 @@ def edit_event(id):
             doc['feedback1'] = request.form['feedback1']
             doc['feedback2'] = request.form['feedback2']
             doc['feedback3'] = request.form['feedback3']
-            if form.validate_on_submit() == True:
+            if form.validate_on_submit_sur() == True:
                 print("I am in")
                 proposal_status = request.form['proposal_status']
                 print(proposal_status)
@@ -890,7 +910,7 @@ def edit_event(id):
             doc['Hackathon_name'] = request.form['hackathon_name']
             doc['college'] = request.form['college']
             doc['main_event'] = request.form['list_of_events']
-            if form.validate_on_submit() == True:
+            if form.validate_on_submit_hackathon() == True:
                 print("I am in")
                 doc['no_of_participants'] = request.form['no_of_participants']
                 doc['no_of_registrations'] = request.form['no_of_registrations']
