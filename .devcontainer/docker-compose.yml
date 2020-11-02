@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        # [Choice] Python version: 3, 3.8, 3.7, 3.6
+        VARIANT: 3.6
+
+    volumes:
+      - ..:/workspace:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    
+    depends_on:
+      - db
+    links:
+      - db
+
+    ports:
+      - '5002:5000'
+      - '5984'
+    networks:
+      - ibm-project-network
+      - host
+    
+  db:
+    image: couchdb
+    restart: unless-stopped
+    volumes:
+      - couchdb-data:/opt/couchdb/data
+    ports:
+      - 5984:5984
+    networks:
+      - ibm-project-network
+      - host
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=admin
+    
+networks:
+  ibm-project-network:
+    external: true
+  host:
+volumes:
+  couchdb-data:
