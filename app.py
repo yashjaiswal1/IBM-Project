@@ -557,7 +557,7 @@ def add_event():
             # compute total number of participants and add them here
             doc = {'event_name': event_name, 'college': college,'theme' : theme ,
                    'no_of_participants': no_of_participants, 'enddate': enddate, 'startdate': startdate,
-                   'status': status, 'sponsorsship_amount': sponsorship_amount,'status': status,
+                   'status': status, 'sponsorship_amount': sponsorship_amount,'status': status, 'url_list': url_list,
                    'portal_status' : portal_status ,'post_event_social' : post_event_social,'topic':topic, 'type': 'event',
                    'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3}
             db.save(doc)
