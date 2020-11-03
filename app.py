@@ -10,6 +10,7 @@ from fpdf import FPDF
 import csv
 import datetime
 import pandas as pd
+import numpy
 
 app = Flask(__name__)
 app.secret_key = 'secret123'
@@ -140,6 +141,7 @@ class RegisterForm(Form):
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords do not match')
     ])
+
     confirm = PasswordField('Confirm Password')
 
 
@@ -632,7 +634,7 @@ def add_event():
             # compute total number of participants and add them here
             doc = {'event_name': event_name, 'college': college, 'theme': theme,
                    'no_of_participants': no_of_participants, 'enddate': enddate, 'startdate': startdate,
-                   'status': status, 'sponsorsship_amount': sponsorship_amount, 'status': status,
+                   'status': status, 'sponsorship_amount': sponsorship_amount, 'status': status,
                    'portal_status': portal_status, 'post_event_social': post_event_social, 'topic': topic, 'type': 'event',
                    'feedback1': feedback1, 'feedback2': feedback2, 'feedback3': feedback3}
             db.save(doc)
@@ -1186,6 +1188,208 @@ def delete_event(id):
     return redirect(url_for('dashboard'))
 
 
+def getMonthName(date_obj):
+    months = {
+        1:'Jan',
+        2:'Feb',
+        3:'Mar',
+        4:'Apr',
+        5:'May',
+        6:'Jun',
+        7:'Jul',
+        8:'Aug',
+        9:'Sep',
+        10:'Oct',
+        11:'Nov',
+        12:'Dec',
+    }
+    return months.get(date_obj.month, "")
+
+
+def getQuarter(date_obj):
+    quarters = {
+        1:'Q1',
+        2:'Q1',
+        3:'Q1',
+        4:'Q2',
+        5:'Q2',
+        6:'Q2',
+        7:'Q3',
+        8:'Q3',
+        9:'Q3',
+        10:'Q4',
+        11:'Q4',
+        12:'Q4',
+    }
+    return quarters.get(date_obj.month, "") 
+     
+
+def addDetails(data,slno,start_date,end_date,bu,college,event_name,portal_status,post_event_social,tech_area,speakers,topic,no_sessions,no_attendees,status,comments):
+    
+
+    start_date_obj = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+    end_date_obj = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+    print(start_date)
+    print(end_date)
+    print(end_date_obj - start_date_obj)
+    data['Sl. No'].append(slno)
+    data['Event Quarter'].append(getQuarter(start_date_obj))
+    data['Event Month'].append(getMonthName(start_date_obj))
+    data['BU'].append(bu)
+    data['College Name'].append(college)
+    data['Event Name'].append(event_name)
+    data['Event Posted on Portal'].append(portal_status)
+    data['Socialising'].append(post_event_social)
+    data['Event Duration (1H = 1 Hour 1 day = 1D 1 month = 1M)'].append(str(end_date_obj - start_date_obj)[:-9])
+    data['Technology / Area'].append(tech_area)
+    data['Speaker/s'].append(speakers)
+    data['Topic/s'].append(topic)
+    data['No of sessions'].append(no_sessions)
+    data['No. of attendees'].append(no_attendees)
+    data['Status'].append(status)
+    data['Date'].append(start_date)
+    data['Comments'].append(comments)
+    
+    collegeDoc = None
+    for i in db:
+        c = {}
+        if db[i]['type'] == 'admin_college_add':
+            if db[i]['college_name'] == college:
+                collegeDoc = db[i]
+    
+    if collegeDoc:
+        data['College Category'].append(collegeDoc['college_category'])
+        data['Location'].append(collegeDoc['city'])
+        data['Region'].append(collegeDoc['region'])
+        data['UR SPOC'].append(collegeDoc['ur_spoc'])
+    else:
+        data['College Category'].append('')
+        data['Location'].append('')
+        data['Region'].append('')
+        data['UR SPOC'].append('')
+    
+
+def exportEventsData():
+
+    data = {
+        'Sl. No':[],	
+        'Event Quarter':[],	
+        'Event Month':[],
+        'BU':[],	
+        'College Name':[],	#c
+        'College Category':[],	#c
+        'Location':[],	#c
+        'Region':[],	#c
+        'UR SPOC':[],	#c
+        'Event Name':[],	
+        'Event Posted on Portal':[],	
+        'Socialising':[],	
+        'Event Duration (1H = 1 Hour 1 day = 1D 1 month = 1M)':[],	
+        'Technology / Area':[],	
+        'Speaker/s':[],	
+        'Topic/s':[],	
+        'No of sessions':[], 	
+        'No. of attendees':[],	
+        'Status':[],	
+        'Date':[],	
+        'Comments':[]
+    }
+    count = 1
+    for i in db:
+        c = {}
+        if db[i]['type'] == 'event':
+            for j in db[i]:
+                c[j] = db[i][j]
+            # data[cols[0]].append(count)
+            addDetails(data,
+                count,
+                c['startdate'],
+                c['enddate'],
+                '',
+                c['college'],
+                c['event_name'],
+                c['portal_status'],
+                c['post_event_social'],
+                c['theme'],
+                [],
+                c['topic'],
+                '',
+                c['no_of_participants'],
+                c['status'],
+                [c['feedback1'],c['feedback2'],c['feedback3']]
+            )
+            count = count + 1
+        elif db[i]['type'] == 'SUR':
+            for j in db[i]:
+                c[j] = db[i][j]
+            del c['_id']
+            del c['_rev']
+            addDetails(data,
+                count,
+                c['project_startdate'],
+                c['project_enddate'],
+                '',
+                '',
+                c['sur_topic_name'],
+                c['portal_status'],
+                '',
+                c['Technology'],
+                c['list_prof'],
+                c['sur_topic_name'],
+                '',
+                '',
+                c['proposal_status'],
+                [c['feedback1'],c['feedback2'],c['feedback3']]
+            )
+            count = count + 1
+        elif db[i]['type'] == 'tech Session':
+            for j in db[i]:
+                c[j] = db[i][j]
+            del c['_id']
+            del c['_rev']
+            addDetails(data,
+                count,
+                c['startdate'],
+                c['enddate'],
+                c['bu'],
+                c['college'],
+                c['event_name'],
+                c['portal_status'],
+                c['post_event_social'],
+                c['theme'],
+                c['speaker_name'],
+                c['topic'],
+                '',
+                c['no_of_participants'],
+                c['status'],
+                [c['feedback1'],c['feedback2'],c['feedback3']]
+            )
+            count = count + 1
+        elif db[i]['type'] == 'Hackathon':
+            for j in db[i]:
+                c[j] = db[i][j]
+            del c['_id']
+            del c['_rev']
+            addDetails(data,
+                count,
+                c['startdate'],
+                c['enddate'],
+                '',
+                c['college'],
+                c['Hackathon_name'],
+                c['portal_status'],
+                '',
+                c['theme'],
+                c['jury'],
+                '',
+                '',
+                c['no_of_registrations'],
+                c['status'],
+                [c['feedback1'],c['feedback2'],c['feedback3']]
+            )
+            count = count + 1
+    return data
+
 # Download Event
 @app.route('/downloadpdf', methods=['GET'])
 @is_logged_in
@@ -1194,35 +1398,21 @@ def download():
     c = {}
     a = []
     pdf.add_page()
-    pdf.set_font("Arial", size=5)
-    i = int(1)
-    for i in db:
-        c = {}
-        if db[i]['type'] == 'event':
-            for j in db[i]:
-                # print(j,db[i][j])
-                c[j] = db[i][j]
-            del c['_id']
-            del c['_rev']
-            del c['topic']
-            # pdf.cell(200, 10, txt=str(c), ln=1, align="L")
-            a.append(c)
-    m = []
-    data = [['event_name', 'college', 'no_of_participants',
-             'enddate', 'startdate', 'status', 'theme', 'topic']]
-    for i in a:
-        for j in i:
-            m.append(i[j])
-        data.append(m)
-        m = []
-
-    col_width = pdf.w / 10.5
+    pdf.set_font("Arial", size=4)
+    data_raw = exportEventsData()
+    df = pd.DataFrame(data_raw)
+    data = df.values
+    col_width = pdf.w / 22
     row_height = pdf.font_size
-    spacing = 1
+    spacing = 2
+    for col in df.columns:
+        pdf.cell(col_width, row_height * spacing,
+                     txt=str(col), border=1)
+    pdf.ln(row_height * spacing)
     for row in data:
         for item in row:
             pdf.cell(col_width, row_height * spacing,
-                     txt=item, border=1)
+                     txt=str(item), border=1)
         pdf.ln(row_height * spacing)
         #     print(item, end = " ")
         # print()
@@ -1235,77 +1425,17 @@ def download():
 @app.route('/downloadexcel', methods=['GET'])
 @is_logged_in
 def downloadexcel():
-    events = []
-    sur = []
-    tech_session = []
-    hackathon = []
-    for i in db:
-        c = {}
-        if db[i]['type'] == 'event':
-            for j in db[i]:
-                c[j] = db[i][j]
-            del c['_id']
-            del c['_rev']
-            del c['topic']
-            events.append(c)
-        elif db[i]['type'] == 'SUR':
-            for j in db[i]:
-                c[j] = db[i][j]
-            del c['_id']
-            del c['_rev']
-            sur.append(c)
-        elif db[i]['type'] == 'tech Session':
-            for j in db[i]:
-                c[j] = db[i][j]
-            del c['_id']
-            del c['_rev']
-            tech_session.append(c)
-        elif db[i]['type'] == 'Hackathon':
-            for j in db[i]:
-                c[j] = db[i][j]
-            del c['_id']
-            del c['_rev']
-            hackathon.append(c)
-
-    m_event = {}
-    m_sur = {}
-    m_techSession = {}
-    m_hackathon = {}
-    header_event = ['event_name', 'college', 'no_of_participants',
-                    'enddate', 'startdate', 'status', 'sponsorship_amount']
-    header_techSession = ['main_event', 'event_name', 'college', 'no_of_participants', 'status',
-                          'startdate', 'enddate', 'theme', 'bu', 'ibm_sme_name', 'box_location_atten', 'box_location_feed']
-    header_hackathon = ['main_event', 'Hackathon_name', 'college', 'no_of_participants', 'no_of_registrations', 'no_of_abstracts',
-                        'no_of_finalist', 'startdate', 'enddate', 'finaledate', 'theme', 'jury', 'status', 'team_name1', 'team_name2', 'winning_team_profiles']
-    header_sur = ['sur_topic_name', 'professor_Name', 'Technology', 'proposal_receipt_date', 'proposal_submission_date', 'project_startdate', 'project_enddate',
-                  'proposal_status', 'invoice_receipt_date', 'invoice_payout_date', 'paper_publications', 'conference_show', 'sur_proposal_location', 'project_url']
-
-    for i in header_event:
-        m_event[i] = [events[j][i] for j in range(len(events))]
-    for i in header_techSession:
-        m_techSession[i] = [tech_session[j][i]
-                            for j in range(len(tech_session))]
-    for i in header_hackathon:
-        m_hackathon[i] = [hackathon[j][i] for j in range(len(hackathon))]
-    for i in header_sur:
-        m_sur[i] = [sur[j][i] for j in range(len(sur))]
-
-    print(m_event)
-    df_event = pd.DataFrame(m_event)
-    df_techSession = pd.DataFrame(m_techSession)
-    df_hacathon = pd.DataFrame(m_hackathon)
-    df_sur = pd.DataFrame(m_sur)
-
+    data = exportEventsData()
+   
+    df_data = pd.DataFrame(data)
     writer = pd.ExcelWriter('Event.xlsx', engine='xlsxwriter')
 
-    df_event.to_excel(writer, sheet_name='Main event')
-    df_hacathon.to_excel(writer, sheet_name='Hackathon')
-    df_techSession.to_excel(writer, sheet_name='Tech Session')
-    df_sur.to_excel(writer, sheet_name='SUR')
+    df_data.to_excel(writer, sheet_name='Events')
 
     writer.save()
     path = "Event.xlsx"
     return send_file(path, as_attachment=True)
+    # return redirect(url_for('dashboard'))
 
 
 if __name__ == '__main__':
