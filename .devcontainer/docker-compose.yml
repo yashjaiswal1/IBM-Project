@@ -33,7 +33,7 @@ services:
     volumes:
       - couchdb-data:/opt/couchdb/data
     ports:
-      - 5984:5984
+      - 5986:5984
     networks:
       - ibm-project-network
       - host

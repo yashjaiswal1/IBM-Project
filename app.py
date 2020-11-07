@@ -26,10 +26,10 @@ def make_session_permanent():
 
 
 def authorizeCouch():
-    couchserver = couchdb.Server("http://db:5984/")
+    couchserver = couchdb.Server("http://db:5986/")
     user = "admin"
     password = "admin"
-    return couchdb.Server("http://%s:%s@db:5984/" % (user, password))
+    return couchdb.Server("http://%s:%s@db:5986/" % (user, password))
 
 
 def dbCreate(dbname, couchserver):
